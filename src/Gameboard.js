@@ -24,10 +24,11 @@ class Gameboard {
     return fleetCoordsWithShips.flat();
   }
 
-  #coordHasShip(coord) {
-    return this.#fleetDeployment.some((coordWithShip) =>
-      _.isEqual(coord, coordWithShip.coord)
+  #findAttackedShip(attackCoord) {
+    const attackedCoordWithShip = this.#fleetDeployment.find((coordWithShip) =>
+      _.isEqual(attackCoord, coordWithShip.coord)
     );
+    return attackedCoordWithShip != null ? attackedCoordWithShip.ship : null;
   }
 
   #attackIsRepeat(newAttackCoord) {
@@ -40,7 +41,15 @@ class Gameboard {
     if (this.#attackIsRepeat(attackCoord))
       throw new Error("Player may not attack the same coordinate twice.");
     this.#receivedAttacks.push(attackCoord);
-    return this.#coordHasShip(attackCoord);
+    const attackedShip = this.#findAttackedShip(attackCoord);
+    if (attackedShip != null) {
+      attackedShip.hit();
+      return {
+        isHit: true,
+        isShipSunk: attackedShip.isSunk(),
+      };
+    }
+    return { isHit: false };
   }
 }
 

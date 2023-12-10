@@ -1,16 +1,25 @@
+const shipConstructorSpy = (() => {
+  const mockSpyMethod = jest.fn();
+  jest.mock("./Ship", () => {
+    const ActualShip = jest.requireActual("./Ship");
+    class SpiedShip extends ActualShip {
+      constructor(...args) {
+        super(...args);
+        mockSpyMethod(...args);
+      }
+    }
+    return SpiedShip;
+  });
+  return mockSpyMethod;
+})();
+
 const Gameboard = require("./Gameboard");
-const Ship = require("./Ship");
-
-jest.mock("./Ship");
-
-beforeEach(() => {
-  Ship.mockClear();
-});
 
 describe("Empty gameboard", () => {
   test("does not call ship constructor", () => {
+    shipConstructorSpy.mockClear();
     const gb = new Gameboard();
-    expect(Ship).toHaveBeenCalledTimes(0);
+    expect(shipConstructorSpy).toHaveBeenCalledTimes(0);
   });
 });
 
@@ -18,7 +27,7 @@ describe("Populated gameboard", () => {
   const fleetCoords = [
     [
       [0, 0],
-      [1, 0],
+      [0, 1],
     ],
     [
       [1, 0],
@@ -46,20 +55,22 @@ describe("Populated gameboard", () => {
   ];
 
   let gb = new Gameboard(fleetCoords);
+
   beforeEach(() => {
+    shipConstructorSpy.mockClear();
     gb = new Gameboard(fleetCoords);
   });
 
   test("calls ship constructor when passed ship coords", () => {
-    expect(Ship).toHaveBeenCalledTimes(5);
+    expect(shipConstructorSpy).toHaveBeenCalledTimes(5);
   });
 
-  test('returns "true" when receivedAttack is a hit', () => {
-    expect(gb.receiveAttack([0, 0])).toBe(true);
+  test("returns isHit as true when receivedAttack is a hit", () => {
+    expect(gb.receiveAttack([0, 0]).isHit).toBe(true);
   });
 
-  test('returns "false" when receivedAttack is a miss', () => {
-    expect(gb.receiveAttack([5, 0])).toBe(false);
+  test("returns isHit as false when receivedAttack is a miss", () => {
+    expect(gb.receiveAttack([5, 0]).isHit).toBe(false);
   });
 
   test("throws error if receivedAttack coord is a repeat", () => {
@@ -72,8 +83,9 @@ describe("Populated gameboard", () => {
     );
   });
 
-  test("returns shipIsSunk as true when received attack sinks the ship", () => {
+  test("returns isShipSunk as true when received attack sinks the ship", () => {
     gb.receiveAttack([0, 0]);
-    expect(gb.receiveAttack([0, 1]).shipIsSunk).toBe(true);
+    const attackReport = gb.receiveAttack([0, 1]);
+    expect(attackReport.isShipSunk).toBe(true);
   });
 });

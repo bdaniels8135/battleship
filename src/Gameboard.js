@@ -12,14 +12,14 @@ class Gameboard {
     this.#receivedAttacks = [];
   }
 
-  static #assignCoordsToNewShip(shipCoords) {
+  static #assignNewShipToCoords(shipCoords) {
     const newShip = new Ship(shipCoords.length);
     return shipCoords.map((shipCoord) => ({ coord: shipCoord, ship: newShip }));
   }
 
   static #deployFleet(fleetCoords) {
     const fleetCoordsWithShips = fleetCoords.map((shipCoords) =>
-      Gameboard.#assignCoordsToNewShip(shipCoords)
+      Gameboard.#assignNewShipToCoords(shipCoords)
     );
     return fleetCoordsWithShips.flat();
   }

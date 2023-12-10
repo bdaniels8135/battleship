@@ -97,7 +97,7 @@ describe("Populated gameboard", () => {
     expect(gb.isFleetSunk()).toBe(true);
   });
 
-  test("returns lists hit and miss coordinates", () => {
+  test("returns lists of hit and miss coordinates", () => {
     gb.receiveAttack([0, 0]);
     gb.receiveAttack([5, 5]);
     expect(gb.hits).toEqual([[0, 0]]);

@@ -59,6 +59,18 @@ class Gameboard {
       (coordWithShip) => coordWithShip.ship.isSunk() === true
     );
   }
+
+  get hits() {
+    return this.#receivedAttacks
+      .filter((attackData) => attackData.wasAHit)
+      .map((attackData) => attackData.attackCoord);
+  }
+
+  get misses() {
+    return this.#receivedAttacks
+      .filter((attackData) => !attackData.wasAHit)
+      .map((attackData) => attackData.attackCoord);
+  }
 }
 
 module.exports = Gameboard;

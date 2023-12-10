@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const Ship = require("./Ship");
 
 class Gameboard {
@@ -11,8 +12,15 @@ class Gameboard {
   static #deployFleet(fleetCoords) {
     fleetCoords.map((shipCoordList) => {
       const newShip = new Ship(shipCoordList.length);
-      return newShip;
+      return shipCoordList;
     });
+    return fleetCoords.flat();
+  }
+
+  receiveAttack(attackCoords) {
+    if (this.#fleetDeployment.some((coord) => _.isEqual(coord, attackCoords)))
+      return true;
+    return false;
   }
 }
 

@@ -46,12 +46,12 @@ class Gameboard {
       attackedShip.hit();
       this.#receivedAttacks.push({ attackCoord, wasAHit: true });
       return {
-        isHit: true,
+        isAHit: true,
         isShipSunk: attackedShip.isSunk(),
       };
     }
     this.#receivedAttacks.push({ attackCoord, wasAHit: false });
-    return { isHit: false };
+    return { isAHit: false };
   }
 
   isFleetSunk() {

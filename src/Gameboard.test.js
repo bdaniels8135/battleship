@@ -65,12 +65,12 @@ describe("Populated gameboard", () => {
     expect(shipConstructorSpy).toHaveBeenCalledTimes(5);
   });
 
-  test("returns isHit as true when receivedAttack is a hit", () => {
-    expect(gb.receiveAttack([0, 0]).isHit).toBe(true);
+  test("returns isAHit as true when receivedAttack is a hit", () => {
+    expect(gb.receiveAttack([0, 0]).isAHit).toBe(true);
   });
 
-  test("returns isHit as false when receivedAttack is a miss", () => {
-    expect(gb.receiveAttack([5, 0]).isHit).toBe(false);
+  test("returns isAHit as false when receivedAttack is a miss", () => {
+    expect(gb.receiveAttack([5, 0]).isAHit).toBe(false);
   });
 
   test("throws error if receivedAttack coord is a repeat", () => {

@@ -45,8 +45,16 @@ class Game {
     this.#playerTwo.gb = new Gameboard(fleetCoords);
   }
 
+  #switchPlayers() {
+    this.#currentPlayer =
+      this.#currentPlayer === this.#playerOne
+        ? this.#playerTwo
+        : this.#playerOne;
+  }
+
   playRound(attackCoords) {
     const attackReport = this.#currentPlayer.gb.receiveAttack(attackCoords);
+    this.#switchPlayers();
     return attackReport;
   }
 

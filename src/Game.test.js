@@ -1,9 +1,10 @@
+const { experiments } = require("webpack");
 const Game = require("./Game");
 
 let game;
 
 beforeEach(() => {
-  game = new Game("Bob", "Donna");
+  game = new Game("PlayerOne", "PlayerTwo");
 });
 
 test("playRound returns the attack report data", () => {
@@ -13,5 +14,10 @@ test("playRound returns the attack report data", () => {
 });
 
 test("returns current player name", () => {
-  expect(game.currentPlayer).toBe("Bob");
+  expect(game.currentPlayer).toBe("PlayerOne");
+});
+
+test("switches currently player after a round is played", () => {
+  game.playRound([0, 0]);
+  expect(game.currentPlayer).toBe("PlayerTwo");
 });

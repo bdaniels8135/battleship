@@ -32,23 +32,25 @@ class Gameboard {
   }
 
   #attackIsRepeat(newAttackCoord) {
-    return this.#receivedAttacks.some((prevAttackCoord) =>
-      _.isEqual(newAttackCoord, prevAttackCoord)
+    return this.#receivedAttacks.some((prevAttackData) =>
+      _.isEqual(newAttackCoord, prevAttackData.attackCoord)
     );
   }
 
   receiveAttack(attackCoord) {
     if (this.#attackIsRepeat(attackCoord))
       throw new Error("Player may not attack the same coordinate twice.");
-    this.#receivedAttacks.push(attackCoord);
+
     const attackedShip = this.#findAttackedShip(attackCoord);
     if (attackedShip != null) {
       attackedShip.hit();
+      this.#receivedAttacks.push({ attackCoord, wasAHit: true });
       return {
         isHit: true,
         isShipSunk: attackedShip.isSunk(),
       };
     }
+    this.#receivedAttacks.push({ attackCoord, wasAHit: false });
     return { isHit: false };
   }
 

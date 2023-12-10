@@ -12,17 +12,21 @@ class Gameboard {
     this.#receivedAttacks = [];
   }
 
+  static #assignCoordsToNewShip(shipCoords) {
+    const newShip = new Ship(shipCoords.length);
+    return shipCoords.map((shipCoord) => ({ coord: shipCoord, ship: newShip }));
+  }
+
   static #deployFleet(fleetCoords) {
-    fleetCoords.map((shipCoords) => {
-      const newShip = new Ship(shipCoords.length);
-      return shipCoords;
-    });
-    return fleetCoords.flat();
+    const fleetCoordsWithShips = fleetCoords.map((shipCoords) =>
+      Gameboard.#assignCoordsToNewShip(shipCoords)
+    );
+    return fleetCoordsWithShips.flat();
   }
 
   #coordHasShip(coord) {
-    return this.#fleetDeployment.some((shipCoord) =>
-      _.isEqual(coord, shipCoord)
+    return this.#fleetDeployment.some((coordWithShip) =>
+      _.isEqual(coord, coordWithShip.coord)
     );
   }
 

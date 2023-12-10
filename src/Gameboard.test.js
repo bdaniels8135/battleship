@@ -51,3 +51,8 @@ test('returns "true" when receivedAttack is a hit', () => {
   const gb = new Gameboard(fleetCoords);
   expect(gb.receiveAttack([0, 0])).toBe(true);
 });
+
+test('returns "false" when receivedAttack is a miss', () => {
+  const gb = new Gameboard(fleetCoords);
+  expect(gb.receiveAttack([5, 0])).toBe(false);
+});

@@ -21,3 +21,9 @@ test("switches currently player after a round is played", () => {
   game.playRound([0, 0]);
   expect(game.currentPlayer).toBe("PlayerTwo");
 });
+
+test("if current player is AI it takes a turn", () => {
+  game = new Game("HumanPlayer");
+  game.playRound([0, 0]);
+  expect(game.currentPlayer).toBe("HumanPlayer");
+});

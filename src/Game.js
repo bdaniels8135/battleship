@@ -55,6 +55,7 @@ class Game {
   playRound(attackCoords) {
     const attackReport = this.#currentPlayer.gb.receiveAttack(attackCoords);
     this.#switchPlayers();
+    if (this.#currentPlayer.isAI) this.playRound([0, 0]);
     return attackReport;
   }
 

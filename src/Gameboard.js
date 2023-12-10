@@ -51,6 +51,12 @@ class Gameboard {
     }
     return { isHit: false };
   }
+
+  isFleetSunk() {
+    return this.#fleetDeployment.every(
+      (coordWithShip) => coordWithShip.ship.isSunk() === true
+    );
+  }
 }
 
 module.exports = Gameboard;

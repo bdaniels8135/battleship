@@ -88,4 +88,12 @@ describe("Populated gameboard", () => {
     const attackReport = gb.receiveAttack([0, 1]);
     expect(attackReport.isShipSunk).toBe(true);
   });
+
+  test("isFleetSunk method returns true only if all ships are sunk", () => {
+    fleetCoords.flat().forEach((coord) => {
+      expect(gb.isFleetSunk()).toBe(false);
+      gb.receiveAttack(coord);
+    });
+    expect(gb.isFleetSunk()).toBe(true);
+  });
 });

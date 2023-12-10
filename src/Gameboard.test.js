@@ -56,3 +56,15 @@ test('returns "false" when receivedAttack is a miss', () => {
   const gb = new Gameboard(fleetCoords);
   expect(gb.receiveAttack([5, 0])).toBe(false);
 });
+
+test("throws error if receivedAttack coord is a repeat", () => {
+  const gb = new Gameboard(fleetCoords);
+
+  function repeatedAttack() {
+    gb.receiveAttack([0, 0]);
+    gb.receiveAttack([0, 0]);
+  }
+  expect(repeatedAttack).toThrow(
+    "Player may not attack the same coordinate twice."
+  );
+});

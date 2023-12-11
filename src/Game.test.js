@@ -66,4 +66,8 @@ test("game ends only if all of one player's ships have sunk", () => {
   });
   expect(game.isOver).toBe(true);
   expect(game.winner).toBe("HumanPlayer");
+  function playRoundAfterOver() {
+    game.playRound();
+  }
+  expect(playRoundAfterOver).toThrow("Cannot play rounds after game ends");
 });

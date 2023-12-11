@@ -47,7 +47,7 @@ class Gameboard {
       this.#receivedAttacks.push({ attackCoord, wasAHit: true });
       return {
         isAHit: true,
-        isShipSunk: attackedShip.isSunk(),
+        isShipSunk: attackedShip.isSunk,
       };
     }
     this.#receivedAttacks.push({ attackCoord, wasAHit: false });
@@ -56,7 +56,7 @@ class Gameboard {
 
   isFleetSunk() {
     return this.#fleetDeployment.every(
-      (coordWithShip) => coordWithShip.ship.isSunk() === true
+      (coordWithShip) => coordWithShip.ship.isSunk === true
     );
   }
 

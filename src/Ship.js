@@ -9,10 +9,10 @@ class Ship {
   }
 
   hit() {
-    if (!this.isSunk()) this.#hits += 1;
+    if (!this.isSunk) this.#hits += 1;
   }
 
-  isSunk() {
+  get isSunk() {
     return this.#hits >= this.#length;
   }
 }

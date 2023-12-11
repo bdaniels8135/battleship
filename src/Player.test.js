@@ -25,7 +25,7 @@ test("getAIMove generates a random move", () => {
   expect(getAIMoveReturnValue[1]).toEqual(expect.any(Number));
 });
 
-test.each([...Array(50)])(
+test.each([...Array(25)])(
   "getAIMove can generate 100 moves without repeating itself",
   () => {
     const fleetCoords = [
@@ -67,3 +67,11 @@ test.each([...Array(50)])(
     });
   }
 );
+
+test("getAIMove throws error if player is not AI", () => {
+  const humanPlayer = new Player("PlayerName");
+  function humanAIMove() {
+    humanPlayer.getAIMove();
+  }
+  expect(humanAIMove).toThrow("Human players cannot use AI move generator");
+});

@@ -30,6 +30,8 @@ class Player {
   }
 
   getAIMove() {
+    if (!this.#isAI)
+      throw new Error("Human players cannot use AI move generator");
     return this.#movesGen.next().value;
   }
 }

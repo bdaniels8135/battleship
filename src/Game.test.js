@@ -1,4 +1,3 @@
-const { experiments } = require("webpack");
 const Game = require("./Game");
 
 let game;

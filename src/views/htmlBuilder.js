@@ -16,8 +16,9 @@ export function buildTextHtml(htmlTag, text) {
   return textHtml;
 }
 
-export function buildLabelHtml(inputId) {
+export function buildLabelHtml(inputId, text) {
   const labelHtml = document.createElement("label");
+  labelHtml.innerText = text;
   labelHtml.for = inputId;
   return labelHtml;
 }

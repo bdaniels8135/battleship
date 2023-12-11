@@ -8,10 +8,6 @@ class Ship {
     this.#hits = 0;
   }
 
-  get length() {
-    return this.#length;
-  }
-
   hit() {
     if (!this.isSunk()) this.#hits += 1;
   }

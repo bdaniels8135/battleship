@@ -15,6 +15,11 @@ class Player {
   get isAI() {
     return this.#isAI;
   }
+
+  *getAIMove() {
+    yield [0, 0];
+    yield [0, 1];
+  }
 }
 
 module.exports = Player;

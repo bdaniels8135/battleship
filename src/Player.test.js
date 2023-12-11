@@ -1,3 +1,4 @@
+const Gameboard = require("./Gameboard");
 const Player = require("./Player");
 
 test("players have a name", () => {
@@ -14,3 +15,57 @@ test("players created without a name are bots", () => {
   const skynet = new Player();
   expect(skynet.isAI).toBe(true);
 });
+
+test("getAIMove generates a random move", () => {
+  const skynet = new Player();
+  const moveGen = skynet.getAIMove();
+  const getAIMoveReturnValue = moveGen.next().value;
+  expect(getAIMoveReturnValue).toBeInstanceOf(Array);
+  expect(getAIMoveReturnValue.length).toBe(2);
+  expect(getAIMoveReturnValue[0]).toEqual(expect.any(Number));
+  expect(getAIMoveReturnValue[1]).toEqual(expect.any(Number));
+});
+
+test.each([...Array(2)])(
+  "getAIMove can generate 100 moves without repeating itself",
+  () => {
+    const fleetCoords = [
+      [
+        [0, 0],
+        [0, 1],
+      ],
+      [
+        [1, 0],
+        [1, 1],
+        [1, 2],
+      ],
+      [
+        [2, 0],
+        [2, 1],
+        [2, 2],
+      ],
+      [
+        [3, 0],
+        [3, 1],
+        [3, 2],
+        [3, 3],
+      ],
+      [
+        [4, 0],
+        [4, 1],
+        [4, 2],
+        [4, 3],
+        [4, 4],
+      ],
+    ];
+    const gb = new Gameboard(fleetCoords);
+    const skynet = new Player();
+    const moveGen = skynet.getAIMove();
+    [...Array(100)].forEach(() => {
+      function playAIRound() {
+        gb.receiveAttack(moveGen.next().value);
+      }
+      expect(playAIRound).not.toThrow();
+    });
+  }
+);

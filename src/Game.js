@@ -53,14 +53,28 @@ class Game {
   }
 
   playRound(attackCoords) {
-    const attackReport = this.#currentPlayer.gb.receiveAttack(attackCoords);
     this.#switchPlayers();
-    if (this.#currentPlayer.isAI) this.playRound([0, 0]);
+    const attackReport = this.#currentPlayer.gb.receiveAttack(attackCoords);
+    if (this.#currentPlayer.isAI && !this.isOver)
+      this.playRound(this.#currentPlayer.getAIMove());
     return attackReport;
   }
 
   get currentPlayer() {
     return this.#currentPlayer.name;
+  }
+
+  get isOver() {
+    return this.#playerOne.gb.isFleetSunk() || this.#playerTwo.gb.isFleetSunk();
+  }
+
+  get winner() {
+    if (this.isOver) {
+      return this.#currentPlayer === this.#playerOne
+        ? this.#playerTwo.name
+        : this.#playerOne.name;
+    }
+    return null;
   }
 }
 

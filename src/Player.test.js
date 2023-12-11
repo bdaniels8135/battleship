@@ -18,15 +18,14 @@ test("players created without a name are bots", () => {
 
 test("getAIMove generates a random move", () => {
   const skynet = new Player();
-  const moveGen = skynet.getAIMove();
-  const getAIMoveReturnValue = moveGen.next().value;
+  const getAIMoveReturnValue = skynet.getAIMove();
   expect(getAIMoveReturnValue).toBeInstanceOf(Array);
   expect(getAIMoveReturnValue.length).toBe(2);
   expect(getAIMoveReturnValue[0]).toEqual(expect.any(Number));
   expect(getAIMoveReturnValue[1]).toEqual(expect.any(Number));
 });
 
-test.each([...Array(2)])(
+test.each([...Array(50)])(
   "getAIMove can generate 100 moves without repeating itself",
   () => {
     const fleetCoords = [
@@ -60,10 +59,9 @@ test.each([...Array(2)])(
     ];
     const gb = new Gameboard(fleetCoords);
     const skynet = new Player();
-    const moveGen = skynet.getAIMove();
     [...Array(100)].forEach(() => {
       function playAIRound() {
-        gb.receiveAttack(moveGen.next().value);
+        gb.receiveAttack(skynet.getAIMove());
       }
       expect(playAIRound).not.toThrow();
     });

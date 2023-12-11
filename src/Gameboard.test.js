@@ -89,12 +89,12 @@ describe("Populated gameboard", () => {
     expect(attackReport.isShipSunk).toBe(true);
   });
 
-  test("isFleetSunk method returns true only if all ships are sunk", () => {
+  test("fleetIsSunk is true only if all ships are sunk", () => {
     fleetCoords.flat().forEach((coord) => {
-      expect(gb.isFleetSunk()).toBe(false);
+      expect(gb.fleetIsSunk).toBe(false);
       gb.receiveAttack(coord);
     });
-    expect(gb.isFleetSunk()).toBe(true);
+    expect(gb.fleetIsSunk).toBe(true);
   });
 
   test("returns lists of hit and miss coordinates", () => {

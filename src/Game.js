@@ -66,7 +66,7 @@ class Game {
   }
 
   get isOver() {
-    return this.#playerOne.gb.isFleetSunk() || this.#playerTwo.gb.isFleetSunk();
+    return this.#playerOne.gb.fleetIsSunk || this.#playerTwo.gb.fleetIsSunk;
   }
 
   get winner() {

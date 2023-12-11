@@ -54,7 +54,7 @@ class Gameboard {
     return { isAHit: false };
   }
 
-  isFleetSunk() {
+  get fleetIsSunk() {
     return this.#fleetDeployment.every(
       (coordWithShip) => coordWithShip.ship.isSunk === true
     );

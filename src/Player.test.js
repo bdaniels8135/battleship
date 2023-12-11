@@ -25,48 +25,45 @@ test("getAIMove generates a random move", () => {
   expect(getAIMoveReturnValue[1]).toEqual(expect.any(Number));
 });
 
-test.each([...Array(25)])(
-  "getAIMove can generate 100 moves without repeating itself",
-  () => {
-    const fleetCoords = [
-      [
-        [0, 0],
-        [0, 1],
-      ],
-      [
-        [1, 0],
-        [1, 1],
-        [1, 2],
-      ],
-      [
-        [2, 0],
-        [2, 1],
-        [2, 2],
-      ],
-      [
-        [3, 0],
-        [3, 1],
-        [3, 2],
-        [3, 3],
-      ],
-      [
-        [4, 0],
-        [4, 1],
-        [4, 2],
-        [4, 3],
-        [4, 4],
-      ],
-    ];
-    const gb = new Gameboard(fleetCoords);
-    const skynet = new Player();
-    [...Array(100)].forEach(() => {
-      function playAIRound() {
-        gb.receiveAttack(skynet.getAIMove());
-      }
-      expect(playAIRound).not.toThrow();
-    });
-  }
-);
+test.each([...Array(25)])("getAIMove can generate 100 legal moves", () => {
+  const fleetCoords = [
+    [
+      [0, 0],
+      [0, 1],
+    ],
+    [
+      [1, 0],
+      [1, 1],
+      [1, 2],
+    ],
+    [
+      [2, 0],
+      [2, 1],
+      [2, 2],
+    ],
+    [
+      [3, 0],
+      [3, 1],
+      [3, 2],
+      [3, 3],
+    ],
+    [
+      [4, 0],
+      [4, 1],
+      [4, 2],
+      [4, 3],
+      [4, 4],
+    ],
+  ];
+  const gb = new Gameboard(fleetCoords);
+  const skynet = new Player();
+  [...Array(100)].forEach(() => {
+    function playAIRound() {
+      gb.receiveAttack(skynet.getAIMove());
+    }
+    expect(playAIRound).not.toThrow();
+  });
+});
 
 test("getAIMove throws error if player is not AI", () => {
   const humanPlayer = new Player("PlayerName");

@@ -71,7 +71,7 @@ class Game {
 
   get winner() {
     if (this.isOver) {
-      return this.#currentPlayer === this.#playerOne
+      return this.#playerOne.gb.fleetIsSunk === true
         ? this.#playerTwo.name
         : this.#playerOne.name;
     }

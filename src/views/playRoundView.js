@@ -1,11 +1,12 @@
-const {
+import {
   buildGameboardHtml,
   buildTextHtml,
   wrapHtmlElements,
   buildInputHtml,
-} = require("./htmlBuilder");
+} from "./htmlBuilder";
+import "./playRoundView.css";
 
-function playRoundView() {
+export default function playRoundView() {
   const playerOneGBText = buildTextHtml("p", "Your Gameboard");
   playerOneGBText.id = "player-one-gb-text";
   const playerTwoGBText = buildTextHtml("p", "Opponent's Gameboard");
@@ -35,5 +36,3 @@ function playRoundView() {
 
   return html;
 }
-
-module.exports = playRoundView;

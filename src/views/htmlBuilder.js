@@ -92,3 +92,8 @@ export function buildGameboardHtml() {
   html.classList.add("gameboard");
   return html;
 }
+
+export function buildPageHeader() {
+  const headerText = buildHeaderTextHtml("BATTLESHIP", "1");
+  return wrapHtmlElements("header", headerText);
+}

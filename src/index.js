@@ -1,7 +1,5 @@
 import "./index.css";
-import playRoundView from "./views/playRoundView";
-import gameStartView from "./views/gameStartView";
+import ViewController from "./views/ViewController";
 
-const body = document.querySelector("body");
-
-body.appendChild(gameStartView());
+const VC = ViewController();
+VC.displayGameStartView();

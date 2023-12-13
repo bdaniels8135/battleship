@@ -1,11 +1,12 @@
-const {
+import {
   buildSelectOption,
   buildInputHtml,
   wrapHtmlElements,
   buildLabelHtml,
-} = require("./htmlBuilder");
+} from "./htmlBuilder";
+import "./gameStartView.css";
 
-function gameStartView() {
+export default function gameStartView() {
   const humanPlayerOption = buildSelectOption("Human", "Human");
   const computerPlayerOption = buildSelectOption("Computer", "Computer");
   const playerOneSelect = wrapHtmlElements(
@@ -67,5 +68,3 @@ function gameStartView() {
   html.id = "game-start-menu-container";
   return html;
 }
-
-module.exports = gameStartView;

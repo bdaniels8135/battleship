@@ -2,6 +2,7 @@ const {
   buildGameboardHtml,
   buildTextHtml,
   wrapHtmlElements,
+  buildInputHtml,
 } = require("./htmlBuilder");
 
 function playRoundView() {
@@ -18,13 +19,17 @@ function playRoundView() {
   const announcementTextBox = buildTextHtml("p", "Announcement Text Box");
   announcementTextBox.id = "announcement-text-box";
 
+  const resetBtn = buildInputHtml("button", "reset-btn", "reset-btn");
+  resetBtn.value = "Resign/New Game";
+
   const html = wrapHtmlElements(
     "main",
     playerOneGBText,
     playerOneGBHtml,
     announcementTextBox,
     playerTwoGBHtml,
-    playerTwoGBText
+    playerTwoGBText,
+    resetBtn
   );
   html.id = "game-container";
 

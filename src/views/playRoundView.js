@@ -24,7 +24,7 @@ export default function playRoundView() {
   resetBtn.value = "Resign/New Game";
 
   const html = wrapHtmlElements(
-    "main",
+    "div",
     playerOneGBText,
     playerOneGBHtml,
     announcementTextBox,

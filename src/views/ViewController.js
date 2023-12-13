@@ -1,23 +1,27 @@
 import playRoundView from "./playRoundView";
 import gameStartView from "./gameStartView";
+import { buildPageHeader } from "./htmlBuilder";
 
 export default function ViewController() {
   const body = document.querySelector("body");
+  const pageHeader = buildPageHeader();
+  const main = document.createElement("main");
+  body.append(pageHeader, main);
 
-  function clearPage() {
-    body.innerHTML = "";
+  function clearMain() {
+    main.innerHTML = "";
   }
 
   function displayGameStartView() {
-    clearPage();
+    clearMain();
     const gsv = gameStartView();
-    body.appendChild(gsv);
+    main.appendChild(gsv);
   }
 
   function displayPlayRoundView() {
-    clearPage();
+    clearMain();
     const prv = playRoundView();
-    body.appendChild(prv);
+    main.appendChild(prv);
   }
 
   return {

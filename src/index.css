@@ -8,6 +8,25 @@
 body {
   height: 100vh;
   display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 .25rem .25rem grey;
+  border-bottom: 1px solid black;
+}
+
+header h1 {
+  font-size: 2rem;
+  padding: 1rem;
+  letter-spacing: 2px;
+}
+
+main {
+  padding: 2rem;
+  display: flex;
   align-items: center;
   justify-content: center;
 }

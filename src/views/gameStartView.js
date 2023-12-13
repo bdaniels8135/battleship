@@ -64,6 +64,7 @@ function gameStartView() {
     playerTwoNameInput,
     startGameBtn
   );
+  html.id = "game-start-menu-container";
   return html;
 }
 

@@ -8,7 +8,8 @@ class Game {
 
   #currentPlayer;
 
-  constructor(playerOneName, playerTwoName) {
+  constructor(playerNames) {
+    const { playerOneName, playerTwoName } = playerNames;
     this.#playerOne = new Player(playerOneName);
     this.#playerTwo = new Player(playerTwoName);
     this.#currentPlayer = this.#playerOne;

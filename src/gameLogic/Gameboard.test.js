@@ -100,7 +100,11 @@ describe("Populated gameboard", () => {
   test("returns lists of hit and miss coordinates", () => {
     gb.receiveAttack([0, 0]);
     gb.receiveAttack([5, 5]);
-    expect(gb.hits).toEqual([[0, 0]]);
-    expect(gb.misses).toEqual([[5, 5]]);
+    expect(gb.hitCoords).toEqual([[0, 0]]);
+    expect(gb.missCoords).toEqual([[5, 5]]);
+  });
+
+  test("returns list of fleet coords correctly", () => {
+    expect(gb.fleetCoords).toEqual(fleetCoords.flat());
   });
 });

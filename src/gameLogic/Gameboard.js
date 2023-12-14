@@ -2,13 +2,17 @@ const _ = require("lodash");
 const Ship = require("./Ship");
 
 class Gameboard {
+  #fleetCoords;
+
   #fleetDeployment;
 
   #receivedAttacks;
 
   constructor(fleetCoords) {
-    if (fleetCoords != null)
+    if (fleetCoords != null) {
+      this.#fleetCoords = fleetCoords.flat();
       this.#fleetDeployment = Gameboard.#deployFleet(fleetCoords);
+    }
     this.#receivedAttacks = [];
   }
 
@@ -60,13 +64,17 @@ class Gameboard {
     );
   }
 
-  get hits() {
+  get fleetCoords() {
+    return this.#fleetCoords;
+  }
+
+  get hitCoords() {
     return this.#receivedAttacks
       .filter((attackData) => attackData.wasAHit)
       .map((attackData) => attackData.attackCoord);
   }
 
-  get misses() {
+  get missCoords() {
     return this.#receivedAttacks
       .filter((attackData) => !attackData.wasAHit)
       .map((attackData) => attackData.attackCoord);

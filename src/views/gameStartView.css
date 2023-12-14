@@ -28,3 +28,7 @@ input[type=button] {
 form .displayed {
   visibility: visible;
 }
+
+.invalid {
+  border-color: red;
+}

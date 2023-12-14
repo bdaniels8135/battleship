@@ -10,10 +10,14 @@ export default function gameStartView() {
     "-- Select Player One Type --",
     ""
   );
+  playerOneDefaultOption.setAttribute("selected", "");
+  playerOneDefaultOption.setAttribute("disabled", "");
   const playerTwoDefaultOption = buildSelectOption(
     "-- Select Player Two Type --",
     ""
   );
+  playerTwoDefaultOption.setAttribute("selected", "");
+  playerTwoDefaultOption.setAttribute("disabled", "");
   const humanPlayerOption = buildSelectOption("Human", "Human");
   const computerPlayerOption = buildSelectOption("Computer", "Computer");
   const playerOneSelect = wrapHtmlElements(

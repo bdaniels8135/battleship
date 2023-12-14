@@ -36,15 +36,42 @@ export default function ViewController() {
         playerTwoNameInput.classList.add("displayed");
     });
 
+    function validateNameInputs() {
+      let returnValue = true;
+      playerOneNameInput.classList.remove("invalid");
+      playerTwoNameInput.classList.remove("invalid");
+      if (
+        playerOneSelect.value === "Human" &&
+        playerOneNameInput.value.trim() === ""
+      ) {
+        playerOneNameInput.classList.add("invalid");
+        returnValue = false;
+      }
+      if (
+        playerTwoSelect.value === "Human" &&
+        playerTwoNameInput.value.trim() === ""
+      ) {
+        playerTwoNameInput.classList.add("invalid");
+        returnValue = false;
+      }
+      return returnValue;
+    }
+
+    playerOneNameInput.addEventListener("focusout", validateNameInputs);
+    playerTwoNameInput.addEventListener("focusout", validateNameInputs);
+
     const startGameBtn = document.querySelector("#start-game-button");
     startGameBtn.addEventListener("click", () => {
-      if (playerOneSelect.value !== "" && playerTwoSelect.value !== "") {
+      if (
+        validateNameInputs() &&
+        playerOneSelect.value !== "" &&
+        playerTwoSelect.value !== ""
+      ) {
         startBtnClickFunc({
           playerOneName: playerOneNameInput.value,
           playerTwoName: playerTwoNameInput.value,
         });
       }
-      // Display form validation text?
     });
   }
 

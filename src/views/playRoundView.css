@@ -1,0 +1,38 @@
+.gb-row {
+  display: flex;
+}
+
+#game-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+.gameboard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+}
+
+.gb-cell {
+  height: 2rem;
+  width: 2rem;
+  border: 1px solid black;
+}
+
+#reset-btn {
+  margin-top: 2rem;
+}
+
+#announcement-text-box {
+  font-size: 1.5rem;
+  margin: 1rem;
+  font-weight: 650;
+}
+
+.gb-label {
+  font-weight: 650;
+  font-size: 1.2rem;
+}

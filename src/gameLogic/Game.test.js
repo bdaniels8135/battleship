@@ -3,7 +3,11 @@ const Game = require("./Game");
 let game;
 
 beforeEach(() => {
-  game = new Game("PlayerOne", "PlayerTwo");
+  const playerNames = {
+    playerOneName: "PlayerOne",
+    playerTwoName: "PlayerTwo",
+  };
+  game = new Game(playerNames);
 });
 
 test("playRound returns the attack report data", () => {
@@ -22,13 +26,19 @@ test("switches current player after a round is played", () => {
 });
 
 test("if current player is AI it takes a turn", () => {
-  game = new Game("HumanPlayer");
+  const playerNames = {
+    playerOneName: "HumanPlayer",
+  };
+  game = new Game(playerNames);
   game.playRound([0, 0]);
   expect(game.currentPlayer).toBe("HumanPlayer");
 });
 
 test("game ends only if all of one player's ships have sunk", () => {
-  game = new Game("HumanPlayer");
+  const playerNames = {
+    playerOneName: "HumanPlayer",
+  };
+  game = new Game(playerNames);
   const fleetCoords = [
     [
       [0, 0],

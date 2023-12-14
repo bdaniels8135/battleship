@@ -78,6 +78,34 @@ class Game {
     }
     return null;
   }
+
+  get currentPlayerFleetCoords() {
+    return this.#currentPlayer.gb.fleetCoords;
+  }
+
+  get currentPlayerGBHitCoords() {
+    return this.#currentPlayer.gb.hitCoords;
+  }
+
+  get currentPlayerGBMissCoords() {
+    return this.#currentPlayer.gb.missCoords;
+  }
+
+  get opponentPlayerGBMissCoords() {
+    const opponentPlayer =
+      this.#currentPlayer === this.#playerOne
+        ? this.#playerTwo
+        : this.#playerOne;
+    return opponentPlayer.gb.missCoords;
+  }
+
+  get opponentPlayerGBHitCoords() {
+    const opponentPlayer =
+      this.#currentPlayer === this.#playerOne
+        ? this.#playerTwo
+        : this.#playerOne;
+    return opponentPlayer.gb.hitCoords;
+  }
 }
 
 module.exports = Game;

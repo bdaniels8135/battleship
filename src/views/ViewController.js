@@ -13,7 +13,7 @@ export default function ViewController() {
     main.innerHTML = "";
   }
 
-  function displayGameStartView(startGameFunc) {
+  function displayGameStartView(startBtnClickFunc) {
     clearMain();
     const gsv = gameStartView();
     main.appendChild(gsv);
@@ -39,11 +39,9 @@ export default function ViewController() {
     const startGameBtn = document.querySelector("#start-game-button");
     startGameBtn.addEventListener("click", () => {
       if (playerOneSelect.value !== "" && playerTwoSelect.value !== "") {
-        startGameFunc({
+        startBtnClickFunc({
           playerOneName: playerOneNameInput.value,
           playerTwoName: playerTwoNameInput.value,
-          playerOneType: playerOneSelect.value,
-          playerTwoType: playerTwoSelect.value,
         });
       }
       // Display form validation text?

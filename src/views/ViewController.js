@@ -75,10 +75,53 @@ export default function ViewController() {
     });
   }
 
-  function displayPlayRoundView() {
+  function displayPlayRoundView(roundDisplayInfo, gridCellClickFunc) {
     clearMain();
     const prv = playRoundView();
     main.appendChild(prv);
+
+    const {
+      lastMoveResultString,
+      currentPlayerFleetCoords,
+      currentPlayerGBHitCoords,
+      currentPlayerGBMissCoords,
+      opponentPlayerGBMissCoords,
+      opponentPlayerGBHitCoords,
+    } = roundDisplayInfo;
+
+    const announcementTextBox = document.querySelector(
+      "#announcement-text-box"
+    );
+    announcementTextBox.innerText = lastMoveResultString;
+
+    const currentPlayerGBGrid = document.querySelector("#current-player-gb");
+    currentPlayerFleetCoords.forEach(([x, y]) => {
+      currentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("occupied");
+    });
+    currentPlayerGBHitCoords.forEach(([x, y]) => {
+      currentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("hit");
+    });
+    currentPlayerGBMissCoords.forEach(([x, y]) => {
+      currentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("miss");
+    });
+
+    const opponentPlayerGBGrid = document.querySelector("#opponent-player-gb");
+    opponentPlayerGBHitCoords.forEach(([x, y]) => {
+      opponentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("hit");
+    });
+    opponentPlayerGBMissCoords.forEach(([x, y]) => {
+      opponentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("miss");
+    });
+    opponentPlayerGBGrid.childNodes.forEach((gridRow) => {
+      gridRow.childNodes.forEach((gridCell) => {
+        gridCell.addEventListener("click", gridCellClickFunc);
+      });
+    });
+
+    const resignBtn = document.querySelector("#resign-btn");
+    resignBtn.addEventListener("click", () => {
+      displayGameStartView();
+    });
   }
 
   return {

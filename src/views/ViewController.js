@@ -120,7 +120,7 @@ export default function ViewController() {
 
     const resignBtn = document.querySelector("#resign-btn");
     resignBtn.addEventListener("click", () => {
-      displayGameStartView();
+      window.location.reload();
     });
   }
 

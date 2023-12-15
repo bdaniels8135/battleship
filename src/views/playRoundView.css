@@ -17,6 +17,7 @@
 }
 
 .gb-cell {
+  padding: .25rem;
   height: 2rem;
   width: 2rem;
   border: 1px solid black;
@@ -30,9 +31,22 @@
   font-size: 1.5rem;
   margin: 1rem;
   font-weight: 650;
+  text-align: center;
 }
 
 .gb-label {
   font-weight: 650;
   font-size: 1.2rem;
+}
+
+.gb-cell.hit {
+  content: url('../assets/bang-icon.png');
+}
+
+.gb-cell.miss{
+  content: url('../assets/splash-icon.png');
+}
+
+.gb-cell.occupied {
+  background-color: grey;
 }

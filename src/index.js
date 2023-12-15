@@ -11,17 +11,12 @@ function buildGridCellClickFunc(game) {
       Number(attackCoordsString[1]),
     ];
     const roundResult = game.playRound(attackCoord);
-    console.log(roundResult);
     let resultString;
     if (roundResult.isShipSunk)
-      resultString = `${attackCoord} Attacked!
-    Your ship was sunk!`;
+      resultString = `${attackCoord} Attacked!\nYour ship was sunk!`;
     else if (roundResult.isAHit)
-      resultString = `${attackCoord} Attacked! 
-    Your ship was hit!`;
-    else
-      resultString = `${attackCoord} Attacked! 
-    They missed!`;
+      resultString = `${attackCoord} Attacked!\nYour ship was hit!`;
+    else resultString = `${attackCoord} Attacked!\nThey missed!`;
 
     const roundDisplayInfo = {
       lastMoveResultString: resultString,

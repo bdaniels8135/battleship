@@ -26,7 +26,7 @@ export default function playRoundView() {
   const announcementTextBox = buildTextHtml("p", "Announcement Text Box");
   announcementTextBox.id = "announcement-text-box";
 
-  const resetBtn = buildInputHtml("button", "reset-btn", "reset-btn");
+  const resetBtn = buildInputHtml("button", "resign-btn", "resign-btn");
   resetBtn.value = "Resign Game";
 
   const html = wrapHtmlElements(

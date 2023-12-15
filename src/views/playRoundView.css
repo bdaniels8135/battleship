@@ -40,11 +40,11 @@
 }
 
 .gb-cell.hit {
-  content: url('../assets/bang-icon.png');
+  content: url('../assets/bomb-blast-icon.svg');
 }
 
 .gb-cell.miss{
-  content: url('../assets/splash-icon.png');
+  content: url('../assets/splash-icon.svg');
 }
 
 .gb-cell.occupied {

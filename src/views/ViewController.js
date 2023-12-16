@@ -86,8 +86,8 @@ export default function ViewController() {
       currentPlayerFleetCoords,
       currentPlayerGBHitCoords,
       currentPlayerGBMissCoords,
-      opponentPlayerGBMissCoords,
-      opponentPlayerGBHitCoords,
+      opposingPlayerGBMissCoords,
+      opposingPlayerGBHitCoords,
     } = roundDisplayInfo;
 
     const announcementTextBox = document.querySelector(
@@ -106,14 +106,14 @@ export default function ViewController() {
       currentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("miss");
     });
 
-    const opponentPlayerGBGrid = document.querySelector("#opponent-player-gb");
-    opponentPlayerGBHitCoords.forEach(([x, y]) => {
-      opponentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("hit");
+    const opposingPlayerGBGrid = document.querySelector("#opponent-player-gb");
+    opposingPlayerGBMissCoords.forEach(([x, y]) => {
+      opposingPlayerGBGrid.childNodes[y].childNodes[x].classList.add("hit");
     });
-    opponentPlayerGBMissCoords.forEach(([x, y]) => {
-      opponentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("miss");
+    opposingPlayerGBHitCoords.forEach(([x, y]) => {
+      opposingPlayerGBGrid.childNodes[y].childNodes[x].classList.add("miss");
     });
-    opponentPlayerGBGrid.childNodes.forEach((gridRow) => {
+    opposingPlayerGBGrid.childNodes.forEach((gridRow) => {
       gridRow.childNodes.forEach((gridCell) => {
         gridCell.addEventListener("click", gridCellClickFunc);
       });

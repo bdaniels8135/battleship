@@ -37,8 +37,8 @@ function buildGridCellClickFunc(game) {
       currentPlayerFleetCoords: game.currentPlayerFleetCoords,
       currentPlayerGBHitCoords: game.currentPlayerGBHitCoords,
       currentPlayerGBMissCoords: game.currentPlayerGBMissCoords,
-      opponentPlayerGBMissCoords: game.opponentPlayerGBMissCoords,
-      opponentPlayerGBHitCoords: game.opponentPlayerGBHitCoords,
+      opposingPlayerGBMissCoords: game.opposingPlayerGBMissCoords,
+      opposingPlayerGBHitCoords: game.opposingPlayerGBHitCoords,
     };
     VC.displayPlayRoundView(roundDisplayInfo, gridCellClickFunc);
   };
@@ -51,8 +51,8 @@ function startBtnClickFunc(playerNames) {
     currentPlayerFleetCoords: game.currentPlayerFleetCoords,
     currentPlayerGBHitCoords: game.currentPlayerGBHitCoords,
     currentPlayerGBMissCoords: game.currentPlayerGBMissCoords,
-    opponentPlayerGBMissCoords: game.opponentPlayerGBMissCoords,
-    opponentPlayerGBHitCoords: game.opponentPlayerGBHitCoords,
+    opposingPlayerGBMissCoords: game.opposingPlayerGBMissCoords,
+    opposingPlayerGBHitCoords: game.opposingPlayerGBHitCoords,
   };
 
   const gridCellClickFunc = buildGridCellClickFunc(game);

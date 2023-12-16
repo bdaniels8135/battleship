@@ -3,8 +3,7 @@ import {
   buildTextHtml,
   wrapHtmlElements,
   buildInputHtml,
-} from "./htmlBuilder";
-import "./playRoundView.css";
+} from "./htmlBuilders";
 
 export default function playRoundView() {
   const currentPlayerGBLabel = buildTextHtml("p", "Your Gameboard");

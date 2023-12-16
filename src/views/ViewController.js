@@ -1,6 +1,6 @@
 import playRoundView from "./playRoundView";
 import gameStartView from "./gameStartView";
-import { buildPageHeader } from "./htmlBuilder";
+import { buildPageHeader } from "./htmlBuilders";
 import "./index.css";
 
 export default function ViewController() {

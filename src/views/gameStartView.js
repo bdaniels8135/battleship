@@ -2,8 +2,7 @@ import {
   buildSelectOption,
   buildInputHtml,
   wrapHtmlElements,
-} from "./htmlBuilder";
-import "./gameStartView.css";
+} from "./htmlBuilders";
 
 export default function gameStartView() {
   const playerOneDefaultOption = buildSelectOption(

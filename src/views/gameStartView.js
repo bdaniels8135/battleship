@@ -4,61 +4,108 @@ import {
   wrapHtmlElements,
 } from "./htmlBuilders";
 
-export default function gameStartView() {
-  const playerOneDefaultOption = buildSelectOption(
-    "-- Select Player One Type --",
+function buildPlayerTypeSelect(playerNumText) {
+  const defaultOption = buildSelectOption(
+    `-- Select Player ${playerNumText}'s Type --`,
     ""
   );
-  playerOneDefaultOption.setAttribute("selected", "");
-  playerOneDefaultOption.setAttribute("disabled", "");
-  const playerTwoDefaultOption = buildSelectOption(
-    "-- Select Player Two Type --",
-    ""
-  );
-  playerTwoDefaultOption.setAttribute("selected", "");
-  playerTwoDefaultOption.setAttribute("disabled", "");
+  defaultOption.setAttribute("selected", "");
+  defaultOption.setAttribute("disabled", "");
   const humanPlayerOption = buildSelectOption("Human", "Human");
   const computerPlayerOption = buildSelectOption("Computer", "Computer");
-  const playerOneSelect = wrapHtmlElements(
+  const playerTypeSelect = wrapHtmlElements(
     "select",
-    playerOneDefaultOption,
+    defaultOption,
     humanPlayerOption,
     computerPlayerOption
   );
-  playerOneSelect.id = "player-one-select";
-  const playerTwoSelect = wrapHtmlElements(
-    "select",
-    playerTwoDefaultOption,
-    humanPlayerOption.cloneNode(true),
-    computerPlayerOption.cloneNode(true)
-  );
-  playerTwoSelect.id = "player-two-select";
-  const playerOneNameInput = buildInputHtml(
+  playerTypeSelect.id = `player-${playerNumText.toLowerCase()}-select`;
+  return playerTypeSelect;
+}
+
+function buildPlayerNameInput(playerNumText) {
+  const playerNameInput = buildInputHtml(
     "text",
-    "player-one-name",
-    "player-one-name"
+    `player-${playerNumText.toLowerCase()}-name`,
+    `player-${playerNumText.toLowerCase()}-name`
   );
-  playerOneNameInput.placeholder = "Enter Player One's Name";
-  const playerTwoNameInput = buildInputHtml(
-    "text",
-    "player-two-name",
-    "player-two-name"
-  );
-  playerTwoNameInput.placeholder = "Enter Player Two's Name";
+  playerNameInput.placeholder = `Enter Player ${playerNumText}'s Name`;
+  return playerNameInput;
+}
+
+export default function gameStartView(startBtnClickFunc) {
+  const playerOneTypeSelect = buildPlayerTypeSelect("One");
+  const playerTwoTypeSelect = buildPlayerTypeSelect("Two");
+  const playerOneNameInput = buildPlayerNameInput("One");
+  const playerTwoNameInput = buildPlayerNameInput("Two");
+
+  playerOneTypeSelect.addEventListener("change", () => {
+    playerOneNameInput.classList.remove("displayed");
+    playerOneNameInput.value = "";
+    if (playerOneTypeSelect.value === "Human")
+      playerOneNameInput.classList.add("displayed");
+  });
+
+  playerTwoTypeSelect.addEventListener("change", () => {
+    playerTwoNameInput.classList.remove("displayed");
+    playerTwoNameInput.value = "";
+    if (playerTwoTypeSelect.value === "Human")
+      playerTwoNameInput.classList.add("displayed");
+  });
+
+  function validateNameInputs() {
+    let returnValue = true;
+    playerOneNameInput.classList.remove("invalid");
+    playerTwoNameInput.classList.remove("invalid");
+    if (
+      playerOneTypeSelect.value === "Human" &&
+      playerOneNameInput.value.trim() === ""
+    ) {
+      playerOneNameInput.classList.add("invalid");
+      returnValue = false;
+    }
+    if (
+      playerTwoTypeSelect.value === "Human" &&
+      playerTwoNameInput.value.trim() === ""
+    ) {
+      playerTwoNameInput.classList.add("invalid");
+      returnValue = false;
+    }
+    return returnValue;
+  }
+
+  playerOneNameInput.addEventListener("focusout", validateNameInputs);
+  playerTwoNameInput.addEventListener("focusout", validateNameInputs);
+
   const startGameBtn = buildInputHtml(
     "button",
     "start-game-button",
     "start-game-button"
   );
   startGameBtn.value = "Start Game";
+
+  startGameBtn.addEventListener("click", () => {
+    if (
+      validateNameInputs() &&
+      playerOneTypeSelect.value !== "" &&
+      playerTwoTypeSelect.value !== ""
+    ) {
+      startBtnClickFunc({
+        playerOneName: playerOneNameInput.value,
+        playerTwoName: playerTwoNameInput.value,
+      });
+    }
+  });
+
   const html = wrapHtmlElements(
     "form",
-    playerOneSelect,
+    playerOneTypeSelect,
     playerOneNameInput,
-    playerTwoSelect,
+    playerTwoTypeSelect,
     playerTwoNameInput,
     startGameBtn
   );
   html.id = "game-start-menu-container";
+
   return html;
 }

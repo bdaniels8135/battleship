@@ -5,7 +5,7 @@ import {
   buildInputHtml,
 } from "./htmlBuilders";
 
-export default function playRoundView() {
+export default function gameOverView() {
   const playerOneGBLabel = buildTextHtml("p", "Player One's Gameboard");
   playerOneGBLabel.id = "player-one-gb-label";
   playerOneGBLabel.classList.add("gb-label");

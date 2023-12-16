@@ -1,5 +1,6 @@
 import playRoundView from "./playRoundView";
 import gameStartView from "./gameStartView";
+import gameOverView from "./gameOverView";
 import { buildPageHeader } from "./htmlBuilders";
 import "./index.css";
 
@@ -124,8 +125,57 @@ export default function ViewController() {
     });
   }
 
+  function displayGameOverView(gameOverDisplayInfo) {
+    clearMain();
+    const gov = gameOverView();
+    main.appendChild(gov);
+
+    const {
+      gameResultString,
+      playerOneFleetCoords,
+      PlayerTwoFleetCoords,
+      playerOneHitCoords,
+      playerTwoHitCoords,
+      playerOneMissCoords,
+      playerTwoMissCoords,
+    } = gameOverDisplayInfo;
+
+    const announcementTextBox = document.querySelector(
+      "#announcement-text-box"
+    );
+    announcementTextBox.innerText = gameResultString;
+
+    const playerOneGBGrid = document.querySelector("#player-one-gb");
+    playerOneFleetCoords.forEach(([x, y]) => {
+      playerOneGBGrid.childNodes[y].childNodes[x].classList.add("occupied");
+    });
+    playerOneHitCoords.forEach(([x, y]) => {
+      playerOneGBGrid.childNodes[y].childNodes[x].classList.add("hit");
+    });
+    playerOneMissCoords.forEach(([x, y]) => {
+      playerOneGBGrid.childNodes[y].childNodes[x].classList.add("miss");
+    });
+
+    const playerTwoGBGrid = document.querySelector("#player-one-gb");
+    PlayerTwoFleetCoords.forEach(([x, y]) => {
+      playerTwoGBGrid.childNodes[y].childNodes[x].classList.add("occupied");
+    });
+    playerTwoHitCoords.forEach(([x, y]) => {
+      playerTwoGBGrid.childNodes[y].childNodes[x].classList.add("hit");
+    });
+    playerTwoMissCoords.forEach(([x, y]) => {
+      playerTwoGBGrid.childNodes[y].childNodes[x].classList.add("miss");
+    });
+
+    const newGameBtn = document.querySelector("#new-game-btn");
+    newGameBtn.addEventListener("click", () => {
+      window.location.reload();
+    });
+  }
+
   return {
     displayGameStartView,
     displayPlayRoundView,
+    displayGameOverView,
   };
 }

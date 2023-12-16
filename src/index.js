@@ -11,13 +11,27 @@ function buildGridCellClickFunc(game) {
       Number(attackCoordsString[1]),
     ];
     const roundResult = game.playRound(attackCoord);
-    let resultString;
-    if (roundResult.isShipSunk)
-      resultString = `${attackCoord} Attacked!\nYour ship was sunk!`;
-    else if (roundResult.isAHit)
-      resultString = `${attackCoord} Attacked!\nYour ship was hit!`;
-    else resultString = `${attackCoord} Attacked!\nThey missed!`;
 
+    if (game.isOver) {
+      const gameOverDisplayInfo = {
+        gameResultString: `${game.winner} has won!`,
+        playerOneFleetCoords: game.playerOneFleetCoords,
+        playerTwoFleetCoords: game.playerTwoFleetCoords,
+        playerOneGBHitCoords: game.playerOneGBHitCoords,
+        playerTwoGBHitCoords: game.playerTwoGBHitCoords,
+        playerOneGBMissCoords: game.playerOneGBMissCoords,
+        playerTwoGBMissCoords: game.playerTwoGBMissCoords,
+      };
+      VC.displayGameOverView(gameOverDisplayInfo);
+      return;
+    }
+
+    let resultString;
+    if (roundResult.isShipSunk) {
+      resultString = `${attackCoord} Attacked!\nYour ship was sunk!`;
+    } else if (roundResult.isAHit) {
+      resultString = `${attackCoord} Attacked!\nYour ship was hit!`;
+    } else resultString = `${attackCoord} Attacked!\nThey missed!`;
     const roundDisplayInfo = {
       lastMoveResultString: resultString,
       currentPlayerFleetCoords: game.currentPlayerFleetCoords,

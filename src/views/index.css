@@ -117,3 +117,9 @@ form .displayed {
 .gb-cell.occupied {
   background-color: grey;
 }
+
+#turn-transition-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}

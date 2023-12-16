@@ -1,6 +1,7 @@
 import playRoundView from "./playRoundView";
 import gameStartView from "./gameStartView";
 import gameOverView from "./gameOverView";
+import turnTransitionView from "./turnTransitionView";
 import { buildPageHeader } from "./htmlBuilders";
 import "./index.css";
 
@@ -173,9 +174,16 @@ export default function ViewController() {
     });
   }
 
+  function displayTurnTransitionView() {
+    clearMain();
+    const ttv = turnTransitionView();
+    main.appendChild(ttv);
+  }
+
   return {
     displayGameStartView,
     displayPlayRoundView,
     displayGameOverView,
+    displayTurnTransitionView,
   };
 }

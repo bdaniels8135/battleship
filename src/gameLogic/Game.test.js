@@ -4,8 +4,8 @@ let game;
 
 beforeEach(() => {
   const playerNames = {
-    playerOneName: "PlayerOne",
-    playerTwoName: "PlayerTwo",
+    playerOneName: "Player One",
+    playerTwoName: "Player Two",
   };
   game = new Game(playerNames);
 });
@@ -17,26 +17,26 @@ test("playRound returns the attack report data", () => {
 });
 
 test("returns current player name", () => {
-  expect(game.currentPlayer).toBe("PlayerOne");
+  expect(game.currentPlayer).toBe("Player One");
 });
 
 test("switches current player after a round is played", () => {
   game.playRound([0, 0]);
-  expect(game.currentPlayer).toBe("PlayerTwo");
+  expect(game.currentPlayer).toBe("Player Two");
 });
 
 test("if current player is AI it takes a turn", () => {
   const playerNames = {
-    playerOneName: "HumanPlayer",
+    playerOneName: "Human Player",
   };
   game = new Game(playerNames);
   game.playRound([0, 0]);
-  expect(game.currentPlayer).toBe("HumanPlayer");
+  expect(game.currentPlayer).toBe("Human Player");
 });
 
 test("game ends only if all of one player's ships have sunk", () => {
   const playerNames = {
-    playerOneName: "HumanPlayer",
+    playerOneName: "Human Player",
   };
   game = new Game(playerNames);
   const fleetCoords = [
@@ -74,7 +74,7 @@ test("game ends only if all of one player's ships have sunk", () => {
     game.playRound(coord);
   });
   expect(game.isOver).toBe(true);
-  expect(game.winner).toBe("HumanPlayer");
+  expect(game.winner).toBe("Human Player");
   function playRoundAfterOver() {
     game.playRound();
   }

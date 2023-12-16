@@ -60,7 +60,6 @@ class Game {
     let attackReport = this.#currentPlayer.gb.receiveAttack(attackCoords);
     if (this.#currentPlayer.isAI && !this.isOver)
       attackReport = this.playRound(this.#currentPlayer.getAIMove());
-    if (this.isOver) attackReport.gameIsOver = true;
     return attackReport;
   }
 
@@ -107,6 +106,30 @@ class Game {
         ? this.#playerTwo
         : this.#playerOne;
     return opponentPlayer.gb.hitCoords;
+  }
+
+  get playerOneFleetCoords() {
+    return this.#playerOne.gb.fleetCoords;
+  }
+
+  get playerTwoFleetCoords() {
+    return this.#playerTwo.gb.fleetCoords;
+  }
+
+  get playerOneGBHitCoords() {
+    return this.#playerOne.gb.hitCoords;
+  }
+
+  get playerTwoGBHitCoords() {
+    return this.#playerTwo.gb.hitCoords;
+  }
+
+  get playerOneGBMissCoords() {
+    return this.#playerOne.gb.missCoords;
+  }
+
+  get playerTwoGBMissCoords() {
+    return this.#playerTwo.gb.missCoords;
   }
 }
 

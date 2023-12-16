@@ -107,10 +107,10 @@ export default function ViewController() {
     });
 
     const opposingPlayerGBGrid = document.querySelector("#opponent-player-gb");
-    opposingPlayerGBMissCoords.forEach(([x, y]) => {
+    opposingPlayerGBHitCoords.forEach(([x, y]) => {
       opposingPlayerGBGrid.childNodes[y].childNodes[x].classList.add("hit");
     });
-    opposingPlayerGBHitCoords.forEach(([x, y]) => {
+    opposingPlayerGBMissCoords.forEach(([x, y]) => {
       opposingPlayerGBGrid.childNodes[y].childNodes[x].classList.add("miss");
     });
     opposingPlayerGBGrid.childNodes.forEach((gridRow) => {

@@ -54,6 +54,10 @@ class Game {
   playRound(attackCoords) {
     if (this.isOver) throw new Error("Cannot play rounds after game ends");
 
+    const attackReport = this.#opposingPlayer.gb.receiveAttack(attackCoords);
+    attackReport.attackedPlayer = this.#opposingPlayer.name;
+    attackReport.attackingPlayer = this.#currentPlayer.name;
+
     this.#currentPlayer =
       this.#currentPlayer === this.#playerOne
         ? this.#playerTwo
@@ -64,10 +68,8 @@ class Game {
         ? this.#playerTwo
         : this.#playerOne;
 
-    let attackReport = this.#currentPlayer.gb.receiveAttack(attackCoords);
-
     if (this.#currentPlayer.isAI && !this.isOver)
-      attackReport = this.playRound(this.#currentPlayer.getAIMove());
+      this.playRound(this.#currentPlayer.getAIMove());
 
     return attackReport;
   }

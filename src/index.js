@@ -14,7 +14,7 @@ function buildGridCellClickFunc(game) {
 
     if (game.isOver) {
       const gameOverDisplayInfo = {
-        gameResultString: `${game.winner} has won!`,
+        gameResultString: `${game.winner} has won the battle!`,
         playerOneFleetCoords: game.playerOneFleetCoords,
         playerTwoFleetCoords: game.playerTwoFleetCoords,
         playerOneGBHitCoords: game.playerOneGBHitCoords,
@@ -28,10 +28,11 @@ function buildGridCellClickFunc(game) {
 
     let resultString;
     if (roundResult.isShipSunk) {
-      resultString = `${attackCoord} Attacked!\nYour ship was sunk!`;
+      resultString = `${attackCoord} Attacked!\n${roundResult.attackedPlayer}'s ship was sunk!`;
     } else if (roundResult.isAHit) {
-      resultString = `${attackCoord} Attacked!\nYour ship was hit!`;
-    } else resultString = `${attackCoord} Attacked!\nThey missed!`;
+      resultString = `${attackCoord} Attacked!\n ${roundResult.attackedPlayer}'s ship was hit!`;
+    } else
+      resultString = `${attackCoord} Attacked!\n ${roundResult.attackingPlayer} missed!`;
     const roundDisplayInfo = {
       lastMoveResultString: resultString,
       currentPlayerFleetCoords: game.currentPlayerFleetCoords,
@@ -40,6 +41,10 @@ function buildGridCellClickFunc(game) {
       opposingPlayerGBMissCoords: game.opposingPlayerGBMissCoords,
       opposingPlayerGBHitCoords: game.opposingPlayerGBHitCoords,
     };
+
+    if (game.opposingPlayer !== "Skynet")
+      VC.displayTurnTransitionModal(resultString);
+
     VC.displayPlayRoundView(roundDisplayInfo, gridCellClickFunc);
   };
 }

@@ -1,7 +1,7 @@
 import playRoundView from "./playRoundView";
 import gameStartView from "./gameStartView";
 import gameOverView from "./gameOverView";
-import turnTransitionView from "./turnTransitionView";
+import turnTransitionModal from "./turnTransitionModal";
 import { buildPageHeader } from "./htmlBuilders";
 import "./index.css";
 
@@ -9,7 +9,8 @@ export default function ViewController() {
   const body = document.querySelector("body");
   const pageHeader = buildPageHeader();
   const main = document.createElement("main");
-  body.append(pageHeader, main);
+  const ttm = turnTransitionModal();
+  body.append(pageHeader, main, ttm);
 
   function clearMain() {
     main.innerHTML = "";
@@ -80,7 +81,7 @@ export default function ViewController() {
   function displayPlayRoundView(roundDisplayInfo, gridCellClickFunc) {
     clearMain();
     const prv = playRoundView();
-    main.appendChild(prv);
+    main.append(prv);
 
     const {
       lastMoveResultString,
@@ -174,16 +175,16 @@ export default function ViewController() {
     });
   }
 
-  function displayTurnTransitionView() {
-    clearMain();
-    const ttv = turnTransitionView();
-    main.appendChild(ttv);
+  function displayTurnTransitionModal(announcementText) {
+    const modalTextBox = document.querySelector("#modal-text-box");
+    modalTextBox.innerText = announcementText;
+    ttm.showModal();
   }
 
   return {
     displayGameStartView,
     displayPlayRoundView,
     displayGameOverView,
-    displayTurnTransitionView,
+    displayTurnTransitionModal,
   };
 }

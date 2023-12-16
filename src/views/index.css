@@ -30,7 +30,7 @@ main {
   justify-content: center;
 }
 
-form {
+#game-start-menu-container {
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -118,8 +118,23 @@ form .displayed {
   background-color: grey;
 }
 
-#turn-transition-container {
+#turn-transition-modal::backdrop {
+  background-color: black;
+}
+
+dialog {
+  margin: auto;
+}
+
+#turn-transition-modal form {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+#modal-text-box {
+  font-size: 1.5rem;
+  font-weight: 650;
+  text-align: center;
 }

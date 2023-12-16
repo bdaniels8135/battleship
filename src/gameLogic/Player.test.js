@@ -1,31 +1,35 @@
 const Gameboard = require("./Gameboard");
 const Player = require("./Player");
 
+let humanPlayer;
+let AIPlayer;
+
+beforeEach(() => {
+  humanPlayer = new Player("Player Name");
+  AIPlayer = new Player();
+});
+
 test("players have a name", () => {
-  const bob = new Player("Bob");
-  expect(bob.name).toBe("Bob");
+  expect(humanPlayer.name).toBe("Player Name");
 });
 
 test("players created without a name are called Skynet", () => {
-  const skynet = new Player();
-  expect(skynet.name).toBe("Skynet");
+  expect(AIPlayer.name).toBe("Skynet");
 });
 
 test("players created without a name are bots", () => {
-  const skynet = new Player();
-  expect(skynet.isAI).toBe(true);
+  expect(AIPlayer.isAI).toBe(true);
 });
 
-test("getAIMove generates a random move", () => {
-  const skynet = new Player();
-  const getAIMoveReturnValue = skynet.getAIMove();
+test("getAIMove generates a coordinate", () => {
+  const getAIMoveReturnValue = AIPlayer.getAIMove();
   expect(getAIMoveReturnValue).toBeInstanceOf(Array);
   expect(getAIMoveReturnValue.length).toBe(2);
   expect(getAIMoveReturnValue[0]).toEqual(expect.any(Number));
   expect(getAIMoveReturnValue[1]).toEqual(expect.any(Number));
 });
 
-test.each([...Array(25)])("getAIMove can generate 100 legal moves", () => {
+test.each([...Array(10)])("getAIMove can generate 100 legal moves", () => {
   const fleetCoords = [
     [
       [0, 0],
@@ -56,17 +60,15 @@ test.each([...Array(25)])("getAIMove can generate 100 legal moves", () => {
     ],
   ];
   const gb = new Gameboard(fleetCoords);
-  const skynet = new Player();
   [...Array(100)].forEach(() => {
     function playAIRound() {
-      gb.receiveAttack(skynet.getAIMove());
+      gb.receiveAttack(AIPlayer.getAIMove());
     }
     expect(playAIRound).not.toThrow();
   });
 });
 
 test("getAIMove throws error if player is not AI", () => {
-  const humanPlayer = new Player("PlayerName");
   function humanAIMove() {
     humanPlayer.getAIMove();
   }

@@ -38,13 +38,16 @@ class Game {
 
   #currentPlayer;
 
+  #opposingPlayer;
+
   constructor(playerNames) {
     const { playerOneName, playerTwoName } = playerNames;
     this.#playerOne = new Player(playerOneName);
     this.#playerTwo = new Player(playerTwoName);
-    this.#currentPlayer = this.#playerOne;
     this.#playerOne.gb = new Gameboard(fleetCoords);
     this.#playerTwo.gb = new Gameboard(fleetCoords);
+    this.#currentPlayer = this.#playerOne;
+    this.#opposingPlayer = this.#playerTwo;
     if (!playerOneName) this.playRound(this.#currentPlayer.getAIMove());
   }
 
@@ -53,6 +56,11 @@ class Game {
 
     this.#currentPlayer =
       this.#currentPlayer === this.#playerOne
+        ? this.#playerTwo
+        : this.#playerOne;
+
+    this.#opposingPlayer =
+      this.#opposingPlayer === this.#playerOne
         ? this.#playerTwo
         : this.#playerOne;
 
@@ -66,6 +74,10 @@ class Game {
 
   get currentPlayer() {
     return this.#currentPlayer.name;
+  }
+
+  get opposingPlayer() {
+    return this.#opposingPlayer.name;
   }
 
   get isOver() {
@@ -93,20 +105,12 @@ class Game {
     return this.#currentPlayer.gb.missCoords;
   }
 
-  get opponentPlayerGBMissCoords() {
-    const opponentPlayer =
-      this.#currentPlayer === this.#playerOne
-        ? this.#playerTwo
-        : this.#playerOne;
-    return opponentPlayer.gb.missCoords;
+  get opposingPlayerGBMissCoords() {
+    return this.#opposingPlayer.gb.missCoords;
   }
 
-  get opponentPlayerGBHitCoords() {
-    const opponentPlayer =
-      this.#currentPlayer === this.#playerOne
-        ? this.#playerTwo
-        : this.#playerOne;
-    return opponentPlayer.gb.hitCoords;
+  get opposingPlayerGBHitCoords() {
+    return this.#opposingPlayer.gb.hitCoords;
   }
 
   get playerOneFleetCoords() {

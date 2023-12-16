@@ -75,3 +75,25 @@ export function buildLabeledInputHtml(
   );
   return labeledInputHtml;
 }
+
+export function buildGameboardHtml() {
+  const rows = [...Array(10)].map((rowVal, rowInd) => {
+    const rowCells = [...Array(10)].map((colVal, colInd) => {
+      const cell = wrapHtmlElements("div");
+      cell.id = `gb-cell-${colInd}${rowInd}`;
+      cell.classList.add("gb-cell");
+      return cell;
+    });
+    const rowHtml = wrapHtmlElements("div", ...rowCells);
+    rowHtml.classList.add("gb-row");
+    return rowHtml;
+  });
+  const html = wrapHtmlElements("div", ...rows);
+  html.classList.add("gameboard");
+  return html;
+}
+
+export function buildPageHeader() {
+  const headerText = buildHeaderTextHtml("BATTLESHIP", "1");
+  return wrapHtmlElements("header", headerText);
+}

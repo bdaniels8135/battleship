@@ -35,9 +35,11 @@ function buildGridCellClickFunc(game) {
       resultString = `${attackCoord} Attacked!\n ${roundResult.attackingPlayer} missed!`;
     const roundDisplayInfo = {
       lastMoveResultString: resultString,
+      currentPlayerName: game.currentPlayer,
       currentPlayerFleetCoords: game.currentPlayerFleetCoords,
       currentPlayerGBHitCoords: game.currentPlayerGBHitCoords,
       currentPlayerGBMissCoords: game.currentPlayerGBMissCoords,
+      opposingPlayerName: game.opposingPlayer,
       opposingPlayerGBMissCoords: game.opposingPlayerGBMissCoords,
       opposingPlayerGBHitCoords: game.opposingPlayerGBHitCoords,
     };
@@ -52,10 +54,12 @@ function buildGridCellClickFunc(game) {
 function startBtnClickFunc(playerNames) {
   const game = new Game(playerNames);
   const roundDisplayInfo = {
-    lastMoveResultString: "This is war!",
+    lastMoveResultString: "This is war!\n ",
+    currentPlayerName: game.currentPlayer,
     currentPlayerFleetCoords: game.currentPlayerFleetCoords,
     currentPlayerGBHitCoords: game.currentPlayerGBHitCoords,
     currentPlayerGBMissCoords: game.currentPlayerGBMissCoords,
+    opposingPlayerName: game.opposingPlayer,
     opposingPlayerGBMissCoords: game.opposingPlayerGBMissCoords,
     opposingPlayerGBHitCoords: game.opposingPlayerGBHitCoords,
   };

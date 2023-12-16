@@ -2,13 +2,8 @@ import playRoundView from "./playRoundView";
 import gameStartView from "./gameStartView";
 import gameOverView from "./gameOverView";
 import turnTransitionModal from "./turnTransitionModal";
-import { buildHeaderTextHtml, wrapHtmlElements } from "./htmlBuilders";
+import { buildPageHeader } from "./htmlBuilders";
 import "./index.css";
-
-export function buildPageHeader() {
-  const headerText = buildHeaderTextHtml("BATTLESHIP", "1");
-  return wrapHtmlElements("header", headerText);
-}
 
 export default function ViewController() {
   const body = document.querySelector("body");
@@ -29,51 +24,8 @@ export default function ViewController() {
 
   function displayPlayRoundView(roundDisplayInfo, gridCellClickFunc) {
     clearMain();
-    const prv = playRoundView();
+    const prv = playRoundView(roundDisplayInfo, gridCellClickFunc);
     main.append(prv);
-
-    const {
-      lastMoveResultString,
-      currentPlayerFleetCoords,
-      currentPlayerGBHitCoords,
-      currentPlayerGBMissCoords,
-      opposingPlayerGBMissCoords,
-      opposingPlayerGBHitCoords,
-    } = roundDisplayInfo;
-
-    const announcementTextBox = document.querySelector(
-      "#announcement-text-box"
-    );
-    announcementTextBox.innerText = lastMoveResultString;
-
-    const currentPlayerGBGrid = document.querySelector("#current-player-gb");
-    currentPlayerFleetCoords.forEach(([x, y]) => {
-      currentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("occupied");
-    });
-    currentPlayerGBHitCoords.forEach(([x, y]) => {
-      currentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("hit");
-    });
-    currentPlayerGBMissCoords.forEach(([x, y]) => {
-      currentPlayerGBGrid.childNodes[y].childNodes[x].classList.add("miss");
-    });
-
-    const opposingPlayerGBGrid = document.querySelector("#opponent-player-gb");
-    opposingPlayerGBHitCoords.forEach(([x, y]) => {
-      opposingPlayerGBGrid.childNodes[y].childNodes[x].classList.add("hit");
-    });
-    opposingPlayerGBMissCoords.forEach(([x, y]) => {
-      opposingPlayerGBGrid.childNodes[y].childNodes[x].classList.add("miss");
-    });
-    opposingPlayerGBGrid.childNodes.forEach((gridRow) => {
-      gridRow.childNodes.forEach((gridCell) => {
-        gridCell.addEventListener("click", gridCellClickFunc);
-      });
-    });
-
-    const resignBtn = document.querySelector("#resign-btn");
-    resignBtn.addEventListener("click", () => {
-      window.location.reload();
-    });
   }
 
   function displayGameOverView(gameOverDisplayInfo) {

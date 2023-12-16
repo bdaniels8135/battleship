@@ -2,56 +2,83 @@ import {
   buildTextHtml,
   wrapHtmlElements,
   buildInputHtml,
+  buildGameboardHtml,
 } from "./htmlBuilders";
 
-export function buildGameboardHtml() {
-  const rows = [...Array(10)].map((rowVal, rowInd) => {
-    const rowCells = [...Array(10)].map((colVal, colInd) => {
-      const cell = wrapHtmlElements("div");
-      cell.id = `gb-cell-${colInd}${rowInd}`;
-      cell.classList.add("gb-cell");
-      return cell;
-    });
-    const rowHtml = wrapHtmlElements("div", ...rowCells);
-    rowHtml.classList.add("gb-row");
-    return rowHtml;
-  });
-  const html = wrapHtmlElements("div", ...rows);
-  html.classList.add("gameboard");
-  return html;
-}
+export default function playRoundView(roundDisplayInfo, gridCellClickFunc) {
+  const {
+    lastMoveResultString,
+    currentPlayerFleetCoords,
+    currentPlayerGBHitCoords,
+    currentPlayerGBMissCoords,
+    opposingPlayerGBMissCoords,
+    opposingPlayerGBHitCoords,
+    currentPlayerName,
+    opposingPlayerName,
+  } = roundDisplayInfo;
 
-export default function playRoundView() {
-  const currentPlayerGBLabel = buildTextHtml("p", "Your Gameboard");
+  const currentPlayerGBLabel = buildTextHtml(
+    "p",
+    `${currentPlayerName}'s Fleet`
+  );
   currentPlayerGBLabel.id = "current-player-gb-label";
   currentPlayerGBLabel.classList.add("gb-label");
 
-  const opponentPlayerGBLabel = buildTextHtml("p", "Opponent's Gameboard");
-  opponentPlayerGBLabel.id = "opponent-player-gb-label";
-  opponentPlayerGBLabel.classList.add("gb-label");
+  const opposingPlayerGBLabel = buildTextHtml(
+    "p",
+    `${opposingPlayerName}'s Fleet`
+  );
+  opposingPlayerGBLabel.id = "opposing-player-gb-label";
+  opposingPlayerGBLabel.classList.add("gb-label");
 
   const currentPlayerGB = buildGameboardHtml();
   currentPlayerGB.id = "current-player-gb";
   currentPlayerGB.classList.add("gameboard");
 
-  const opponentPlayerGB = buildGameboardHtml();
-  opponentPlayerGB.id = "opponent-player-gb";
-  opponentPlayerGB.classList.add("gameboard");
+  currentPlayerFleetCoords.forEach(([x, y]) => {
+    currentPlayerGB.childNodes[y].childNodes[x].classList.add("occupied");
+  });
+  currentPlayerGBHitCoords.forEach(([x, y]) => {
+    currentPlayerGB.childNodes[y].childNodes[x].classList.add("hit");
+  });
+  currentPlayerGBMissCoords.forEach(([x, y]) => {
+    currentPlayerGB.childNodes[y].childNodes[x].classList.add("miss");
+  });
 
-  const announcementTextBox = buildTextHtml("p", "Announcement Text Box");
+  const opposingPlayerGB = buildGameboardHtml();
+  opposingPlayerGB.id = "opposing-player-gb";
+  opposingPlayerGB.classList.add("gameboard");
+
+  opposingPlayerGBHitCoords.forEach(([x, y]) => {
+    opposingPlayerGB.childNodes[y].childNodes[x].classList.add("hit");
+  });
+  opposingPlayerGBMissCoords.forEach(([x, y]) => {
+    opposingPlayerGB.childNodes[y].childNodes[x].classList.add("miss");
+  });
+
+  opposingPlayerGB.childNodes.forEach((gridRow) => {
+    gridRow.childNodes.forEach((gridCell) => {
+      gridCell.addEventListener("click", gridCellClickFunc);
+    });
+  });
+
+  const announcementTextBox = buildTextHtml("p", `${lastMoveResultString}`);
   announcementTextBox.id = "announcement-text-box";
 
-  const resetBtn = buildInputHtml("button", "resign-btn", "resign-btn");
-  resetBtn.value = "Resign Game";
+  const resignBtn = buildInputHtml("button", "resign-btn", "resign-btn");
+  resignBtn.value = "Resign Game";
+  resignBtn.addEventListener("click", () => {
+    window.location.reload();
+  });
 
   const html = wrapHtmlElements(
     "div",
     currentPlayerGBLabel,
     currentPlayerGB,
     announcementTextBox,
-    opponentPlayerGB,
-    opponentPlayerGBLabel,
-    resetBtn
+    opposingPlayerGB,
+    opposingPlayerGBLabel,
+    resignBtn
   );
   html.id = "game-container";
 

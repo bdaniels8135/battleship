@@ -133,11 +133,11 @@ export default function ViewController() {
     const {
       gameResultString,
       playerOneFleetCoords,
-      PlayerTwoFleetCoords,
-      playerOneHitCoords,
-      playerTwoHitCoords,
-      playerOneMissCoords,
-      playerTwoMissCoords,
+      playerTwoFleetCoords,
+      playerOneGBHitCoords,
+      playerTwoGBHitCoords,
+      playerOneGBMissCoords,
+      playerTwoGBMissCoords,
     } = gameOverDisplayInfo;
 
     const announcementTextBox = document.querySelector(
@@ -149,21 +149,21 @@ export default function ViewController() {
     playerOneFleetCoords.forEach(([x, y]) => {
       playerOneGBGrid.childNodes[y].childNodes[x].classList.add("occupied");
     });
-    playerOneHitCoords.forEach(([x, y]) => {
+    playerOneGBHitCoords.forEach(([x, y]) => {
       playerOneGBGrid.childNodes[y].childNodes[x].classList.add("hit");
     });
-    playerOneMissCoords.forEach(([x, y]) => {
+    playerOneGBMissCoords.forEach(([x, y]) => {
       playerOneGBGrid.childNodes[y].childNodes[x].classList.add("miss");
     });
 
-    const playerTwoGBGrid = document.querySelector("#player-one-gb");
-    PlayerTwoFleetCoords.forEach(([x, y]) => {
+    const playerTwoGBGrid = document.querySelector("#player-two-gb");
+    playerTwoFleetCoords.forEach(([x, y]) => {
       playerTwoGBGrid.childNodes[y].childNodes[x].classList.add("occupied");
     });
-    playerTwoHitCoords.forEach(([x, y]) => {
+    playerTwoGBHitCoords.forEach(([x, y]) => {
       playerTwoGBGrid.childNodes[y].childNodes[x].classList.add("hit");
     });
-    playerTwoMissCoords.forEach(([x, y]) => {
+    playerTwoGBMissCoords.forEach(([x, y]) => {
       playerTwoGBGrid.childNodes[y].childNodes[x].classList.add("miss");
     });
 

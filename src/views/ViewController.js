@@ -2,8 +2,13 @@ import playRoundView from "./playRoundView";
 import gameStartView from "./gameStartView";
 import gameOverView from "./gameOverView";
 import turnTransitionModal from "./turnTransitionModal";
-import { buildPageHeader } from "./htmlBuilders";
+import { buildHeaderTextHtml, wrapHtmlElements } from "./htmlBuilders";
 import "./index.css";
+
+export function buildPageHeader() {
+  const headerText = buildHeaderTextHtml("BATTLESHIP", "1");
+  return wrapHtmlElements("header", headerText);
+}
 
 export default function ViewController() {
   const body = document.querySelector("body");
@@ -18,64 +23,8 @@ export default function ViewController() {
 
   function displayGameStartView(startBtnClickFunc) {
     clearMain();
-    const gsv = gameStartView();
+    const gsv = gameStartView(startBtnClickFunc);
     main.appendChild(gsv);
-
-    const playerOneSelect = document.querySelector("#player-one-select");
-    const playerOneNameInput = document.querySelector("#player-one-name");
-    playerOneSelect.addEventListener("change", () => {
-      playerOneNameInput.classList.remove("displayed");
-      playerOneNameInput.value = "";
-      if (playerOneSelect.value === "Human")
-        playerOneNameInput.classList.add("displayed");
-    });
-
-    const playerTwoSelect = document.querySelector("#player-two-select");
-    const playerTwoNameInput = document.querySelector("#player-two-name");
-    playerTwoSelect.addEventListener("change", () => {
-      playerTwoNameInput.classList.remove("displayed");
-      playerTwoNameInput.value = "";
-      if (playerTwoSelect.value === "Human")
-        playerTwoNameInput.classList.add("displayed");
-    });
-
-    function validateNameInputs() {
-      let returnValue = true;
-      playerOneNameInput.classList.remove("invalid");
-      playerTwoNameInput.classList.remove("invalid");
-      if (
-        playerOneSelect.value === "Human" &&
-        playerOneNameInput.value.trim() === ""
-      ) {
-        playerOneNameInput.classList.add("invalid");
-        returnValue = false;
-      }
-      if (
-        playerTwoSelect.value === "Human" &&
-        playerTwoNameInput.value.trim() === ""
-      ) {
-        playerTwoNameInput.classList.add("invalid");
-        returnValue = false;
-      }
-      return returnValue;
-    }
-
-    playerOneNameInput.addEventListener("focusout", validateNameInputs);
-    playerTwoNameInput.addEventListener("focusout", validateNameInputs);
-
-    const startGameBtn = document.querySelector("#start-game-button");
-    startGameBtn.addEventListener("click", () => {
-      if (
-        validateNameInputs() &&
-        playerOneSelect.value !== "" &&
-        playerTwoSelect.value !== ""
-      ) {
-        startBtnClickFunc({
-          playerOneName: playerOneNameInput.value,
-          playerTwoName: playerTwoNameInput.value,
-        });
-      }
-    });
   }
 
   function displayPlayRoundView(roundDisplayInfo, gridCellClickFunc) {

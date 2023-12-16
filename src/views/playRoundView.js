@@ -1,9 +1,25 @@
 import {
-  buildGameboardHtml,
   buildTextHtml,
   wrapHtmlElements,
   buildInputHtml,
 } from "./htmlBuilders";
+
+export function buildGameboardHtml() {
+  const rows = [...Array(10)].map((rowVal, rowInd) => {
+    const rowCells = [...Array(10)].map((colVal, colInd) => {
+      const cell = wrapHtmlElements("div");
+      cell.id = `gb-cell-${colInd}${rowInd}`;
+      cell.classList.add("gb-cell");
+      return cell;
+    });
+    const rowHtml = wrapHtmlElements("div", ...rowCells);
+    rowHtml.classList.add("gb-row");
+    return rowHtml;
+  });
+  const html = wrapHtmlElements("div", ...rows);
+  html.classList.add("gameboard");
+  return html;
+}
 
 export default function playRoundView() {
   const currentPlayerGBLabel = buildTextHtml("p", "Your Gameboard");

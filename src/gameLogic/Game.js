@@ -74,6 +74,14 @@ class Game {
     return attackReport;
   }
 
+  get playerOne() {
+    return this.#playerOne.name;
+  }
+
+  get playerTwo() {
+    return this.#playerTwo.name;
+  }
+
   get currentPlayer() {
     return this.#currentPlayer.name;
   }

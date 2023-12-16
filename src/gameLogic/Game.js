@@ -44,8 +44,7 @@ class Game {
     ];
     this.#playerOne.gb = new Gameboard(fleetCoords);
     this.#playerTwo.gb = new Gameboard(fleetCoords);
-    if (!playerOneName && !playerTwoName)
-      this.playRound(this.#currentPlayer.getAIMove());
+    if (!playerOneName) this.playRound(this.#currentPlayer.getAIMove());
   }
 
   #switchPlayers() {

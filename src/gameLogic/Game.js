@@ -60,6 +60,7 @@ class Game {
     let attackReport = this.#currentPlayer.gb.receiveAttack(attackCoords);
     if (this.#currentPlayer.isAI && !this.isOver)
       attackReport = this.playRound(this.#currentPlayer.getAIMove());
+    if (this.isOver) attackReport.gameIsOver = true;
     return attackReport;
   }
 

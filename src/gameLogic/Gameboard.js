@@ -9,53 +9,51 @@ class Gameboard {
   #receivedAttacks;
 
   constructor(fleetCoords) {
-    if (fleetCoords != null) {
-      this.#fleetCoords = fleetCoords.flat();
-      this.#fleetDeployment = Gameboard.#deployFleet(fleetCoords);
+    if (fleetCoords == null) {
+      throw new Error("Gameboard requires fleet coordinates");
     }
+    this.#fleetCoords = fleetCoords.flat();
+    this.#fleetDeployment = Gameboard.#deployFleet(fleetCoords);
     this.#receivedAttacks = [];
   }
 
-  static #assignNewShipToCoords(shipCoords) {
-    const newShip = new Ship(shipCoords.length);
-    return shipCoords.map((shipCoord) => ({ coord: shipCoord, ship: newShip }));
-  }
-
   static #deployFleet(fleetCoords) {
-    const fleetCoordsWithShips = fleetCoords.map((shipCoords) =>
-      Gameboard.#assignNewShipToCoords(shipCoords)
-    );
+    const fleetCoordsWithShips = fleetCoords.map((shipCoords) => {
+      const newShip = new Ship(shipCoords.length);
+      return shipCoords.map((shipCoord) => ({
+        coord: shipCoord,
+        ship: newShip,
+      }));
+    });
     return fleetCoordsWithShips.flat();
   }
 
-  #findAttackedShip(attackCoord) {
-    const attackedCoordWithShip = this.#fleetDeployment.find((coordWithShip) =>
-      _.isEqual(attackCoord, coordWithShip.coord)
-    );
-    return attackedCoordWithShip != null ? attackedCoordWithShip.ship : null;
-  }
-
-  #attackIsRepeat(newAttackCoord) {
-    return this.#receivedAttacks.some((prevAttackData) =>
-      _.isEqual(newAttackCoord, prevAttackData.attackCoord)
-    );
-  }
-
   receiveAttack(attackCoord) {
-    if (this.#attackIsRepeat(attackCoord))
+    const attackIsRepeat = this.#receivedAttacks.some((prevAttackData) =>
+      _.isEqual(attackCoord, prevAttackData.attackCoord)
+    );
+
+    if (attackIsRepeat)
       throw new Error("Player may not attack the same coordinate twice.");
 
-    const attackedShip = this.#findAttackedShip(attackCoord);
-    if (attackedShip != null) {
-      attackedShip.hit();
-      this.#receivedAttacks.push({ attackCoord, wasAHit: true });
-      return {
-        isAHit: true,
-        isShipSunk: attackedShip.isSunk,
-      };
+    let attackedShip;
+
+    try {
+      attackedShip = this.#fleetDeployment.find((coordWithShip) =>
+        _.isEqual(attackCoord, coordWithShip.coord)
+      ).ship;
+    } catch {
+      this.#receivedAttacks.push({ attackCoord, wasAHit: false });
+      return { isAHit: false };
     }
-    this.#receivedAttacks.push({ attackCoord, wasAHit: false });
-    return { isAHit: false };
+
+    attackedShip.hit();
+    this.#receivedAttacks.push({ attackCoord, wasAHit: true });
+
+    return {
+      isAHit: true,
+      isShipSunk: attackedShip.isSunk,
+    };
   }
 
   get fleetIsSunk() {

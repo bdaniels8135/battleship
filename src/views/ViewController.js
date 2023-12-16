@@ -30,50 +30,8 @@ export default function ViewController() {
 
   function displayGameOverView(gameOverDisplayInfo) {
     clearMain();
-    const gov = gameOverView();
+    const gov = gameOverView(gameOverDisplayInfo);
     main.appendChild(gov);
-
-    const {
-      gameResultString,
-      playerOneFleetCoords,
-      playerTwoFleetCoords,
-      playerOneGBHitCoords,
-      playerTwoGBHitCoords,
-      playerOneGBMissCoords,
-      playerTwoGBMissCoords,
-    } = gameOverDisplayInfo;
-
-    const announcementTextBox = document.querySelector(
-      "#announcement-text-box"
-    );
-    announcementTextBox.innerText = gameResultString;
-
-    const playerOneGBGrid = document.querySelector("#player-one-gb");
-    playerOneFleetCoords.forEach(([x, y]) => {
-      playerOneGBGrid.childNodes[y].childNodes[x].classList.add("occupied");
-    });
-    playerOneGBHitCoords.forEach(([x, y]) => {
-      playerOneGBGrid.childNodes[y].childNodes[x].classList.add("hit");
-    });
-    playerOneGBMissCoords.forEach(([x, y]) => {
-      playerOneGBGrid.childNodes[y].childNodes[x].classList.add("miss");
-    });
-
-    const playerTwoGBGrid = document.querySelector("#player-two-gb");
-    playerTwoFleetCoords.forEach(([x, y]) => {
-      playerTwoGBGrid.childNodes[y].childNodes[x].classList.add("occupied");
-    });
-    playerTwoGBHitCoords.forEach(([x, y]) => {
-      playerTwoGBGrid.childNodes[y].childNodes[x].classList.add("hit");
-    });
-    playerTwoGBMissCoords.forEach(([x, y]) => {
-      playerTwoGBGrid.childNodes[y].childNodes[x].classList.add("miss");
-    });
-
-    const newGameBtn = document.querySelector("#new-game-btn");
-    newGameBtn.addEventListener("click", () => {
-      window.location.reload();
-    });
   }
 
   function displayTurnTransitionModal(announcementText) {

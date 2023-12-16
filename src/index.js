@@ -15,6 +15,8 @@ function buildGridCellClickFunc(game) {
     if (game.isOver) {
       const gameOverDisplayInfo = {
         gameResultString: `${game.winner} has won the battle!`,
+        playerOneName: game.playerOne,
+        playerTwoName: game.playerTwo,
         playerOneFleetCoords: game.playerOneFleetCoords,
         playerTwoFleetCoords: game.playerTwoFleetCoords,
         playerOneGBHitCoords: game.playerOneGBHitCoords,

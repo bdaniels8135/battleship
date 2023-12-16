@@ -20,9 +20,14 @@ test("returns current player name", () => {
   expect(game.currentPlayer).toBe("Player One");
 });
 
+test("returns opposing player name", () => {
+  expect(game.opposingPlayer).toBe("Player Two");
+});
+
 test("switches current player after a round is played", () => {
   game.playRound([0, 0]);
   expect(game.currentPlayer).toBe("Player Two");
+  expect(game.opposingPlayer).toBe("Player One");
 });
 
 test("if current player is AI it takes a turn", () => {

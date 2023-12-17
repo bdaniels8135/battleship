@@ -3,6 +3,8 @@ import {
   buildTextHtml,
   wrapHtmlElements,
   buildInputHtml,
+  buildGameboardColLabels,
+  buildGameboardRowLabels,
 } from "./htmlBuilders";
 
 export default function gameOverView(gameOverDisplayInfo) {
@@ -65,12 +67,33 @@ export default function gameOverView(gameOverDisplayInfo) {
     window.location.reload();
   });
 
+  const gameboardColLabels = buildGameboardColLabels();
+  const gameboardRowLabels = buildGameboardRowLabels();
+
+  const playerOneGBWithLabels = wrapHtmlElements(
+    "div",
+    gameboardColLabels.cloneNode(true),
+    gameboardRowLabels.cloneNode(true),
+    playerOneGB
+  );
+  playerOneGBWithLabels.classList.add("gb-container");
+  playerOneGBWithLabels.id = "player-one-gb-container";
+
+  const playerTwoGBWithLabels = wrapHtmlElements(
+    "div",
+    gameboardColLabels.cloneNode(true),
+    gameboardRowLabels.cloneNode(true),
+    playerTwoGB
+  );
+  playerTwoGBWithLabels.classList.add("gb-container");
+  playerTwoGBWithLabels.id = "player-two-gb-container";
+
   const html = wrapHtmlElements(
     "div",
     playerOneGBLabel,
-    playerOneGB,
+    playerOneGBWithLabels,
     announcementTextBox,
-    playerTwoGB,
+    playerTwoGBWithLabels,
     playerTwoGBLabel,
     newGameBtn
   );

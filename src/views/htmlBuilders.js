@@ -44,38 +44,6 @@ export function buildSelectOption(text, value) {
   return optionHtml;
 }
 
-function buildInstructionsSpanHtml(instructionsText) {
-  const inputInstructionsSpanHtml = buildTextHtml("span", instructionsText);
-  inputInstructionsSpanHtml.classList.add("input-instructions");
-  return inputInstructionsSpanHtml;
-}
-
-function buildErrorSpanHtml() {
-  const errorSpanHtml = buildTextHtml("span", "");
-  errorSpanHtml.classList.add("error-message");
-  return errorSpanHtml;
-}
-
-export function buildLabeledInputHtml(
-  inputHtml,
-  instructionsText,
-  isRequired = false
-) {
-  const labeledInputHtml = buildLabelHtml(inputHtml.id);
-  const instructionsSpanHtml = buildInstructionsSpanHtml(instructionsText);
-  if (isRequired) {
-    const requiredMark = buildTextHtml("span", "*");
-    requiredMark.classList.add("required-mark");
-    instructionsSpanHtml.appendChild(requiredMark);
-  }
-  labeledInputHtml.append(
-    instructionsSpanHtml,
-    inputHtml,
-    buildErrorSpanHtml()
-  );
-  return labeledInputHtml;
-}
-
 export function buildGameboardHtml() {
   const rows = [...Array(10)].map((rowVal, rowInd) => {
     const rowCells = [...Array(10)].map((colVal, colInd) => {

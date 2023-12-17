@@ -55,6 +55,23 @@ function buildGridCellClickFunc(game) {
 
 function startBtnClickFunc(playerNames) {
   const game = new Game(playerNames);
+
+  if (game.isOver) {
+    const gameOverDisplayInfo = {
+      gameResultString: `${game.winner} has won!`,
+      playerOneName: game.playerOne,
+      playerTwoName: game.playerTwo,
+      playerOneFleetCoords: game.playerOneFleetCoords,
+      playerTwoFleetCoords: game.playerTwoFleetCoords,
+      playerOneGBHitCoords: game.playerOneGBHitCoords,
+      playerTwoGBHitCoords: game.playerTwoGBHitCoords,
+      playerOneGBMissCoords: game.playerOneGBMissCoords,
+      playerTwoGBMissCoords: game.playerTwoGBMissCoords,
+    };
+    VC.displayGameOverView(gameOverDisplayInfo);
+    return;
+  }
+
   const roundDisplayInfo = {
     lastMoveResultString: "This is war!\n ",
     currentPlayerName: game.currentPlayer,

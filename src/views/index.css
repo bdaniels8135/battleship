@@ -82,14 +82,14 @@ form .displayed {
   border: 1px solid black;
 }
 
-.gb-cell {
+#opposing-player-gb .gb-cell {
   padding: .25rem;
   height: 1.75rem;
   width: 1.75rem;
   border: 1px solid black;
 }
 
-#current-player-gb .gb-cell {
+.gb-cell {
   padding: .1rem;
   height: 1rem;
   width: 1rem;

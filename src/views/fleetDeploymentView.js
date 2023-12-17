@@ -10,8 +10,9 @@ import {
 export default function fleetDeploymentView(playerName) {
   const instructionsTextHtml = buildTextHtml(
     "p",
-    `${playerName}, deploy your shipType`
+    `${playerName}, deploy your Patrol Boat`
   );
+  instructionsTextHtml.id = "fleet-deployment-instructions";
 
   const rotateShipBtn = buildInputHtml(
     "button",
@@ -38,6 +39,7 @@ export default function fleetDeploymentView(playerName) {
     rotateShipBtn,
     gameboardWithLabels
   );
+  html.id = "fleet-deployment-container";
 
   return html;
 }

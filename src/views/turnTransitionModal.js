@@ -5,8 +5,10 @@ import {
 } from "./htmlBuilders";
 
 export default function turnTransitionModal() {
-  const announcementTextBox = buildTextHtml("p", "Announcement Text Box");
-  announcementTextBox.id = "modal-text-box";
+  const modalText = buildTextHtml("p", "Modal Text");
+  modalText.id = "modal-text";
+  const modalTextBox = wrapHtmlElements("div", modalText);
+  modalTextBox.classList.add("modal-text-box");
 
   const nextPlayerBtn = buildInputHtml(
     "button",
@@ -16,7 +18,7 @@ export default function turnTransitionModal() {
   nextPlayerBtn.value = "Next Player Ready";
   nextPlayerBtn.setAttribute("autofocus", "");
 
-  const form = wrapHtmlElements("form", announcementTextBox, nextPlayerBtn);
+  const form = wrapHtmlElements("form", modalTextBox, nextPlayerBtn);
   const html = wrapHtmlElements("dialog", form);
   html.id = "turn-transition-modal";
 

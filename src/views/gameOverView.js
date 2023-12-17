@@ -54,8 +54,10 @@ export default function gameOverView(gameOverDisplayInfo) {
     playerTwoGB.childNodes[y].childNodes[x].classList.add("miss");
   });
 
-  const announcementTextBox = buildTextHtml("p", `${gameResultString}`);
-  announcementTextBox.id = "announcement-text-box";
+  const announcementText = buildTextHtml("p", `${gameResultString}`);
+  announcementText.id = "announcement-text";
+  const announcementTextBox = wrapHtmlElements("div", announcementText);
+  announcementTextBox.classList.add("announcement-text-box");
 
   const newGameBtn = buildInputHtml("button", "new-game-btn", "new-game-btn");
   newGameBtn.value = "New Game";

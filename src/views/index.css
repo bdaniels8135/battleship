@@ -96,15 +96,21 @@ form .displayed {
   border: .5px solid black;
 }
 
-#announcement-text-box {
-  font-size: 1.5rem;
+.announcement-text-box {
+  display: flex;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+}
+
+#announcement-text {
+  font-size: 1.3rem;
   font-weight: 650;
   text-align: center;
 }
 
 .gb-label {
   font-weight: 650;
-  font-size: 1.2rem;
 }
 
 .gb-cell.hit {

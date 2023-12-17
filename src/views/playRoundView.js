@@ -62,8 +62,10 @@ export default function playRoundView(roundDisplayInfo, gridCellClickFunc) {
     });
   });
 
-  const announcementTextBox = buildTextHtml("p", `${lastMoveResultString}`);
-  announcementTextBox.id = "announcement-text-box";
+  const announcementText = buildTextHtml("p", `${lastMoveResultString}`);
+  announcementText.id = "announcement-text";
+  const announcementTextBox = wrapHtmlElements("div", announcementText);
+  announcementTextBox.classList.add("announcement-text-box");
 
   const resignBtn = buildInputHtml("button", "resign-btn", "resign-btn");
   resignBtn.value = "Resign Game";

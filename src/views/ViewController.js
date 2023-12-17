@@ -1,6 +1,7 @@
 import playRoundView from "./playRoundView";
 import gameStartView from "./gameStartView";
 import gameOverView from "./gameOverView";
+import fleetDeploymentView from "./fleetDeploymentView";
 import turnTransitionModal from "./turnTransitionModal";
 import { buildPageHeader } from "./htmlBuilders";
 import "./index.css";
@@ -40,10 +41,17 @@ export default function ViewController() {
     ttm.showModal();
   }
 
+  function displayFleetDeploymentView(playerName) {
+    clearMain();
+    const fdv = fleetDeploymentView(playerName);
+    main.appendChild(fdv);
+  }
+
   return {
     displayGameStartView,
     displayPlayRoundView,
     displayGameOverView,
     displayTurnTransitionModal,
+    displayFleetDeploymentView,
   };
 }

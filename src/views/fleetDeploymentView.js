@@ -33,11 +33,22 @@ export default function fleetDeploymentView(playerName) {
   gameboardWithLabels.classList.add("gb-container");
   gameboardWithLabels.id = "deployment-gb-container";
 
+  const resetDeploymentBtn = buildInputHtml(
+    "button",
+    "reset-deployment-btn",
+    "reset-deployment-btn"
+  );
+  resetDeploymentBtn.value = "Reset Deployment";
+  const deployBtn = buildInputHtml("button", "deploy-btn", "deploy-btn");
+  deployBtn.value = "Deploy Fleet";
+
   const html = wrapHtmlElements(
     "div",
     instructionsTextHtml,
     rotateShipBtn,
-    gameboardWithLabels
+    gameboardWithLabels,
+    resetDeploymentBtn,
+    deployBtn
   );
   html.id = "fleet-deployment-container";
 

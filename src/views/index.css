@@ -137,7 +137,7 @@ dialog {
 #turn-transition-modal form {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   padding: 2rem;
 }
 
@@ -183,7 +183,7 @@ dialog {
 #fleet-deployment-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 #fleet-deployment-instructions {

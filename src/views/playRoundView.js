@@ -3,6 +3,8 @@ import {
   wrapHtmlElements,
   buildInputHtml,
   buildGameboardHtml,
+  buildGameboardColLabels,
+  buildGameboardRowLabels,
 } from "./htmlBuilders";
 
 export default function playRoundView(roundDisplayInfo, gridCellClickFunc) {
@@ -73,12 +75,31 @@ export default function playRoundView(roundDisplayInfo, gridCellClickFunc) {
     window.location.reload();
   });
 
+  const gameboardColLabels = buildGameboardColLabels();
+  const gameboardRowLabels = buildGameboardRowLabels();
+
+  const currentPlayerGBWithLabels = wrapHtmlElements(
+    "div",
+    gameboardColLabels.cloneNode(true),
+    gameboardRowLabels.cloneNode(true),
+    currentPlayerGB
+  );
+  currentPlayerGBWithLabels.classList.add("gb-container");
+
+  const opposingPlayerGBWithLabels = wrapHtmlElements(
+    "div",
+    gameboardColLabels.cloneNode(true),
+    gameboardRowLabels.cloneNode(true),
+    opposingPlayerGB
+  );
+  opposingPlayerGBWithLabels.classList.add("gb-container");
+
   const html = wrapHtmlElements(
     "div",
     currentPlayerGBLabel,
-    currentPlayerGB,
+    currentPlayerGBWithLabels,
     announcementTextBox,
-    opposingPlayerGB,
+    opposingPlayerGBWithLabels,
     opposingPlayerGBLabel,
     resignBtn
   );

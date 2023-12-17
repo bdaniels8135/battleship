@@ -93,6 +93,39 @@ export function buildGameboardHtml() {
   return html;
 }
 
+export function buildGameboardColLabels() {
+  const blankLabelElement = buildTextHtml("p", "");
+
+  const colCoordLabels = [...Array(10).keys()].map((x) => x + 1);
+  const colCoordLabelRowElements = colCoordLabels.map((val) => {
+    const colCoordLabelHtml = buildTextHtml("p", val);
+    colCoordLabelHtml.classList.add("gb-coordinate-label");
+    return colCoordLabelHtml;
+  });
+  const gameboardColLabels = wrapHtmlElements(
+    "div",
+    blankLabelElement,
+    ...colCoordLabelRowElements
+  );
+  gameboardColLabels.classList.add("gb-col-labels");
+  return gameboardColLabels;
+}
+
+export function buildGameboardRowLabels() {
+  // A through J
+  const rowCoordLabels = [...Array(10).keys()].map((x) =>
+    String.fromCharCode(x + 65)
+  );
+  const rowLabelElements = rowCoordLabels.map((label) => {
+    const rowLabelElement = buildTextHtml("p", label);
+    rowLabelElement.classList.add("gb-coordinate-label");
+    return rowLabelElement;
+  });
+  const gameboardRowLabels = wrapHtmlElements("div", ...rowLabelElements);
+  gameboardRowLabels.classList.add("gb-row-labels");
+  return gameboardRowLabels;
+}
+
 export function buildPageHeader() {
   const headerText = buildHeaderTextHtml("BATTLESHIP", "1");
   return wrapHtmlElements("header", headerText);

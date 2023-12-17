@@ -95,7 +95,7 @@ export function buildGameboardHtml() {
 
 export function buildGameboardColLabels() {
   const blankLabelElement = buildTextHtml("p", "");
-
+  blankLabelElement.classList.add("gb-coordinate-label");
   const colCoordLabels = [...Array(10).keys()].map((x) => x + 1);
   const colCoordLabelRowElements = colCoordLabels.map((val) => {
     const colCoordLabelHtml = buildTextHtml("p", val);

@@ -85,6 +85,7 @@ export default function playRoundView(roundDisplayInfo, gridCellClickFunc) {
     currentPlayerGB
   );
   currentPlayerGBWithLabels.classList.add("gb-container");
+  currentPlayerGBWithLabels.id = "current-player-gb-container";
 
   const opposingPlayerGBWithLabels = wrapHtmlElements(
     "div",
@@ -93,6 +94,7 @@ export default function playRoundView(roundDisplayInfo, gridCellClickFunc) {
     opposingPlayerGB
   );
   opposingPlayerGBWithLabels.classList.add("gb-container");
+  opposingPlayerGBWithLabels.id = "opposing-player-gb-container";
 
   const html = wrapHtmlElements(
     "div",

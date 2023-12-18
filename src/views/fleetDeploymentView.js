@@ -70,26 +70,34 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
   gameboardWithLabels.classList.add("gb-container");
   gameboardWithLabels.id = "deployment-gb-container";
 
-  function shipWillFit(cellCoord) {
+  function shipWillFit(clickedCellCoords) {
     return true;
   }
 
-  function getTargetCells(cellCoord) {}
+  function getDeploymentCellsCoords(clickedCellCoords) {}
 
-  function targetCellsAreUnoccupied(targetCells) {
+  function getDeploymentCells(deploymentCellsCoords) {}
+
+  function cellsAreUnoccupied(deploymentCells) {
     return true;
   }
 
-  function markCellsAsOccupied(targetCells) {}
+  function markCellsAsOccupied(deploymentCells) {}
 
+  let fleetDeploymentInfo;
   function placeShip(event) {
-    const cellCoordString = event.target.id.slice(-2);
-    const cellCoord = [Number(cellCoordString[0]), Number(cellCoordString[1])];
+    const clickedCellCoordsString = event.target.id.slice(-2);
+    const clickedCellCoords = [
+      Number(clickedCellCoordsString[0]),
+      Number(clickedCellCoordsString[1]),
+    ];
 
-    if (shipWillFit(cellCoord)) {
-      const targetCells = getTargetCells(cellCoord);
-      if (targetCellsAreUnoccupied(targetCells)) {
-        markCellsAsOccupied(targetCells);
+    if (shipWillFit(clickedCellCoords)) {
+      const deploymentCellsCoords = getDeploymentCellsCoords(clickedCellCoords);
+      const deploymentCells = getDeploymentCells(deploymentCellsCoords);
+      if (cellsAreUnoccupied(deploymentCells)) {
+        markCellsAsOccupied(deploymentCells);
+        fleetDeploymentInfo[currentShipInfo.type] = deploymentCellsCoords;
         currentShipInfo = fleetInfo.next().value;
         if (currentShipInfo != null) {
           instructionsTextHtml.innerText = `${playerName}, deploy your ${currentShipInfo.type}.
@@ -121,13 +129,6 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
   const deployBtn = buildInputHtml("button", "deploy-btn", "deploy-btn");
   deployBtn.value = "Deploy Fleet";
   deployBtn.addEventListener("click", () => {
-    const fleetDeploymentInfo = {
-      carrier: "",
-      battleship: "",
-      cruiser: "",
-      submarine: "",
-      patrolBoat: "",
-    };
     deployFunc(fleetDeploymentInfo);
   });
 

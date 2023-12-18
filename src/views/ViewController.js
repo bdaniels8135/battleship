@@ -41,9 +41,9 @@ export default function ViewController() {
     ttm.showModal();
   }
 
-  function displayFleetDeploymentView(playerName) {
+  function displayFleetDeploymentView(playerName, resetFunc, deployFunc) {
     clearMain();
-    const fdv = fleetDeploymentView(playerName);
+    const fdv = fleetDeploymentView(playerName, resetFunc, deployFunc);
     main.appendChild(fdv);
   }
 

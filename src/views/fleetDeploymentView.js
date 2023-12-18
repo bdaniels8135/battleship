@@ -71,20 +71,39 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
   gameboardWithLabels.id = "deployment-gb-container";
 
   function shipWillFit(clickedCellCoords) {
-    return true;
+    const [x, y] = clickedCellCoords;
+    if (rotateShipBtn.value === "Deploy Horizontally")
+      return 10 - x >= currentShipInfo.length;
+    return 10 - y >= currentShipInfo.length;
   }
 
-  function getDeploymentCellsCoords(clickedCellCoords) {}
+  function getDeploymentCellsCoords(clickedCellCoords) {
+    const [x, y] = clickedCellCoords;
+    return [...Array(currentShipInfo.length)].map((val, ind) => {
+      if (rotateShipBtn.value === "Deploy Horizontally") return [x + ind, y];
+      return [x, y + ind];
+    });
+  }
 
-  function getDeploymentCells(deploymentCellsCoords) {}
+  function getDeploymentCells(deploymentCellsCoords) {
+    return deploymentCellsCoords.map(
+      ([x, y]) => gameboard.childNodes[y].childNodes[x]
+    );
+  }
 
   function cellsAreUnoccupied(deploymentCells) {
-    return true;
+    return deploymentCells.every(
+      (cell) => !cell.classList.contains("occupied")
+    );
   }
 
-  function markCellsAsOccupied(deploymentCells) {}
+  function markCellsAsOccupied(deploymentCells) {
+    return deploymentCells.forEach((cell) => {
+      cell.classList.add("occupied");
+    });
+  }
 
-  let fleetDeploymentInfo;
+  const fleetDeploymentInfo = {};
   function placeShip(event) {
     const clickedCellCoordsString = event.target.id.slice(-2);
     const clickedCellCoords = [
@@ -129,7 +148,7 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
   const deployBtn = buildInputHtml("button", "deploy-btn", "deploy-btn");
   deployBtn.value = "Deploy Fleet";
   deployBtn.addEventListener("click", () => {
-    deployFunc(fleetDeploymentInfo);
+    if (currentShipInfo == null) deployFunc(fleetDeploymentInfo);
   });
 
   const html = wrapHtmlElements(

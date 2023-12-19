@@ -1,35 +1,35 @@
 const Gameboard = require("./Gameboard");
 const Player = require("./Player");
 
-const fleetCoords = [
-  [
-    [0, 0],
-    [0, 1],
-  ],
-  [
-    [1, 0],
-    [1, 1],
-    [1, 2],
-  ],
-  [
-    [2, 0],
-    [2, 1],
-    [2, 2],
-  ],
-  [
-    [3, 0],
-    [3, 1],
-    [3, 2],
-    [3, 3],
-  ],
-  [
+const defaultFleetDeploymentInfo = {
+  Carrier: [
     [4, 0],
     [4, 1],
     [4, 2],
     [4, 3],
     [4, 4],
   ],
-];
+  Battleship: [
+    [3, 0],
+    [3, 1],
+    [3, 2],
+    [3, 3],
+  ],
+  Cruiser: [
+    [2, 0],
+    [2, 1],
+    [2, 2],
+  ],
+  Submarine: [
+    [1, 0],
+    [1, 1],
+    [1, 2],
+  ],
+  "Patrol Boat": [
+    [0, 0],
+    [0, 1],
+  ],
+};
 
 class Game {
   #playerOne;
@@ -44,8 +44,10 @@ class Game {
     const { playerOneName, playerTwoName } = playerNames;
     this.#playerOne = new Player(playerOneName);
     this.#playerTwo = new Player(playerTwoName);
-    this.#playerOne.gb = new Gameboard(fleetCoords);
-    this.#playerTwo.gb = new Gameboard(fleetCoords);
+    if (this.#playerOne.isAI)
+      this.#playerOne.gb = new Gameboard(defaultFleetDeploymentInfo);
+    if (this.#playerTwo.isAI)
+      this.#playerTwo.gb = new Gameboard(defaultFleetDeploymentInfo);
     this.#currentPlayer = this.#playerOne;
     this.#opposingPlayer = this.#playerTwo;
     if (!playerOneName) this.playRound(this.#currentPlayer.getAIMove());
@@ -74,6 +76,16 @@ class Game {
     return attackReport;
   }
 
+  deployPlayerOneFleet(fleetDeploymentInfo) {
+    if (this.#playerOne.gb == null)
+      this.#playerOne.gb = new Gameboard(fleetDeploymentInfo);
+  }
+
+  deployPlayerTwoFleet(fleetDeploymentInfo) {
+    if (this.#playerTwo.gb == null)
+      this.#playerTwo.gb = new Gameboard(fleetDeploymentInfo);
+  }
+
   get playerOne() {
     return this.#playerOne.name;
   }
@@ -91,7 +103,9 @@ class Game {
   }
 
   get isOver() {
-    return this.#playerOne.gb.fleetIsSunk || this.#playerTwo.gb.fleetIsSunk;
+    if (this.#playerOne.gb && this.#playerTwo.gb)
+      return this.#playerOne.gb.fleetIsSunk || this.#playerTwo.gb.fleetIsSunk;
+    return false;
   }
 
   get winner() {

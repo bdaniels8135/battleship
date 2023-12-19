@@ -73,11 +73,6 @@ test("if current player is AI it takes a turn", () => {
 });
 
 test("game ends only if all of one player's ships have sunk", () => {
-  const playerNames = {
-    playerOneName: "Human Player",
-  };
-  game = new Game(playerNames);
-  game.deployPlayerOneFleet(defaultFleetDeploymentInfo);
   const fleetCoords = [
     [
       [0, 0],
@@ -111,9 +106,10 @@ test("game ends only if all of one player's ships have sunk", () => {
     expect(game.isOver).toBe(false);
     expect(game.winner).toBeNull();
     game.playRound(coord);
+    if (!game.isOver) game.playRound(coord);
   });
   expect(game.isOver).toBe(true);
-  expect(game.winner).toBe("Human Player");
+  expect(game.winner).toBe("Player One");
   function playRoundAfterOver() {
     game.playRound();
   }

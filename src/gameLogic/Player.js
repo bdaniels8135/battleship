@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 class Player {
   #name;
 
@@ -34,6 +36,62 @@ class Player {
     if (!this.#isAI)
       throw new Error("Human players cannot use AI move generator");
     return this.#movesGen.next().value;
+  }
+
+  static getAIFleetDeploymentInfo() {
+    const shipsWithLengths = {
+      Carrier: 5,
+      Battleship: 4,
+      Cruiser: 3,
+      Submarine: 3,
+      "Patrol Boat": 2,
+    };
+    const fleetDeploymentInfo = {};
+    const occupiedCoords = [];
+
+    function shipWillFit(startCoords, direction, length) {
+      if (direction === 0) return 10 - startCoords[0] >= length;
+      return 10 - startCoords[1] >= length;
+    }
+
+    Object.entries(shipsWithLengths).forEach(([shipType, length]) => {
+      while (true) {
+        const startPos = Math.floor(Math.random() * 100);
+        const startCoords = [startPos % 10, Math.floor(startPos / 10)];
+        const direction = Math.floor(Math.random() * 2);
+        if (shipWillFit(startCoords, direction, length)) {
+          const shipCoords = [];
+          if (direction === 0) {
+            for (let i = 0; i < length; i += 1) {
+              const nextCoords = [startCoords[0] + i, startCoords[1]];
+              if (
+                !occupiedCoords.some((coords) => _.isEqual(coords, nextCoords))
+              )
+                shipCoords.push(nextCoords);
+            }
+            if (shipCoords.length === length) {
+              occupiedCoords.push(...shipCoords);
+              fleetDeploymentInfo[shipType] = shipCoords;
+              break;
+            }
+          } else {
+            for (let i = 0; i < length; i += 1) {
+              const nextCoords = [startCoords[0], startCoords[1] + i];
+              if (
+                !occupiedCoords.some((coords) => _.isEqual(coords, nextCoords))
+              )
+                shipCoords.push(nextCoords);
+            }
+            if (shipCoords.length === length) {
+              occupiedCoords.push(...shipCoords);
+              fleetDeploymentInfo[shipType] = shipCoords;
+              break;
+            }
+          }
+        }
+      }
+    });
+    return fleetDeploymentInfo;
   }
 }
 

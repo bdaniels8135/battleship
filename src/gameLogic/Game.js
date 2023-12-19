@@ -1,36 +1,6 @@
 const Gameboard = require("./Gameboard");
 const Player = require("./Player");
 
-const defaultFleetDeploymentInfo = {
-  Carrier: [
-    [4, 0],
-    [4, 1],
-    [4, 2],
-    [4, 3],
-    [4, 4],
-  ],
-  Battleship: [
-    [3, 0],
-    [3, 1],
-    [3, 2],
-    [3, 3],
-  ],
-  Cruiser: [
-    [2, 0],
-    [2, 1],
-    [2, 2],
-  ],
-  Submarine: [
-    [1, 0],
-    [1, 1],
-    [1, 2],
-  ],
-  "Patrol Boat": [
-    [0, 0],
-    [0, 1],
-  ],
-};
-
 class Game {
   #playerOne;
 
@@ -45,9 +15,9 @@ class Game {
     this.#playerOne = new Player(playerOneName);
     this.#playerTwo = new Player(playerTwoName);
     if (this.#playerOne.isAI)
-      this.#playerOne.gb = new Gameboard(defaultFleetDeploymentInfo);
+      this.#playerOne.gb = new Gameboard(Player.getAIFleetDeploymentInfo());
     if (this.#playerTwo.isAI)
-      this.#playerTwo.gb = new Gameboard(defaultFleetDeploymentInfo);
+      this.#playerTwo.gb = new Gameboard(Player.getAIFleetDeploymentInfo());
     this.#currentPlayer = this.#playerOne;
     this.#opposingPlayer = this.#playerTwo;
     if (!playerOneName) this.playRound(this.#currentPlayer.getAIMove());

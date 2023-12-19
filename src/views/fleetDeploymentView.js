@@ -40,7 +40,8 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
   let currentShipInfo = fleetInfo.next().value;
   const instructionsTextHtml = buildTextHtml(
     "p",
-    `${playerName}, deploy your ${currentShipInfo.type}.
+    `Admiral ${playerName},
+    Deploy your ${currentShipInfo.type}.
     (${currentShipInfo.length} Spaces Needed)`
   );
   instructionsTextHtml.id = "fleet-deployment-instructions";
@@ -119,11 +120,13 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
         fleetDeploymentInfo[currentShipInfo.type] = deploymentCellsCoords;
         currentShipInfo = fleetInfo.next().value;
         if (currentShipInfo != null) {
-          instructionsTextHtml.innerText = `${playerName}, deploy your ${currentShipInfo.type}.
+          instructionsTextHtml.innerText = `Admiral ${playerName}, 
+          Deploy your ${currentShipInfo.type}.
           (${currentShipInfo.length} Spaces Needed)`;
         } else {
-          instructionsTextHtml.innerText =
-            "Ready to deploy the fleet\nat your command!";
+          instructionsTextHtml.innerText = `Admiral ${playerName}, 
+          Ready to deploy the fleet 
+          at your command!`;
         }
       }
     }

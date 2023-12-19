@@ -20,8 +20,7 @@ class Gameboard {
   static #deployFleet(fleetDeploymentInfo) {
     const fleetCoordsWithShips = Object.entries(fleetDeploymentInfo).map(
       ([shipType, shipCoords]) => {
-        const newShip = new Ship(shipCoords.length);
-        newShip.type = shipType;
+        const newShip = new Ship(shipCoords.length, shipType);
         return shipCoords.map((shipCoord) => ({
           coord: shipCoord,
           ship: newShip,

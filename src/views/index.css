@@ -1,7 +1,14 @@
+@font-face {
+  font-family: 'Battleship';
+  src: url('../assets/ARMY\ RUST.ttf');
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  border: 1px dashed red;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -18,13 +25,14 @@ header {
 }
 
 header h1 {
-  font-size: 2rem;
-  padding: 1rem;
-  letter-spacing: 2px;
+  font-size: 3rem;
+  padding: .5rem;
+  letter-spacing: 5px;
+  font-family: 'Battleship', sans-serif;
 }
 
 main {
-  padding-top: 2rem;
+  padding: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,10 +41,7 @@ main {
 #game-start-menu-container {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
   gap: 1rem;
-  border: 2px solid black;
-  box-shadow: .25rem .25rem .25rem grey;
 }
 
 select{
@@ -141,7 +146,7 @@ dialog {
   padding: 2rem;
 }
 
-#modal-text-box {
+#modal-text {
   font-size: 1.5rem;
   font-weight: 650;
   text-align: center;

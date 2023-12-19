@@ -15,48 +15,48 @@ const shipConstructorSpy = (() => {
 
 const Gameboard = require("./Gameboard");
 
-const fleetCoords = [
-  [
-    [0, 0],
-    [0, 1],
-  ],
-  [
-    [1, 0],
-    [1, 1],
-    [1, 2],
-  ],
-  [
-    [2, 0],
-    [2, 1],
-    [2, 2],
-  ],
-  [
-    [3, 0],
-    [3, 1],
-    [3, 2],
-    [3, 3],
-  ],
-  [
+const defaultFleetDeploymentInfo = {
+  Carrier: [
     [4, 0],
     [4, 1],
     [4, 2],
     [4, 3],
     [4, 4],
   ],
-];
+  Battleship: [
+    [3, 0],
+    [3, 1],
+    [3, 2],
+    [3, 3],
+  ],
+  Cruiser: [
+    [2, 0],
+    [2, 1],
+    [2, 2],
+  ],
+  Submarine: [
+    [1, 0],
+    [1, 1],
+    [1, 2],
+  ],
+  "Patrol Boat": [
+    [0, 0],
+    [0, 1],
+  ],
+};
 
 let gb;
 
 beforeEach(() => {
   shipConstructorSpy.mockClear();
-  gb = new Gameboard(fleetCoords);
+  gb = new Gameboard(defaultFleetDeploymentInfo);
 });
 
 test("throws error if no fleet coordinate are passed", () => {
   function noFleetCoords() {
     gb = new Gameboard();
   }
-  expect(noFleetCoords).toThrow("Gameboard requires fleet coordinates");
+  expect(noFleetCoords).toThrow("Gameboard requires fleet deployment info");
 });
 
 test("calls ship constructor when passed ship coords", () => {
@@ -64,7 +64,9 @@ test("calls ship constructor when passed ship coords", () => {
 });
 
 test("returns list of fleet coords correctly", () => {
-  expect(gb.fleetCoords).toEqual(fleetCoords.flat());
+  expect(gb.fleetCoords).toEqual(
+    Object.values(defaultFleetDeploymentInfo).flat()
+  );
 });
 
 test("returns isAHit as true when receivedAttack is a hit", () => {
@@ -99,9 +101,11 @@ test("throws error if receivedAttack coord is a repeat", () => {
 });
 
 test("fleetIsSunk is true only if all ships are sunk", () => {
-  fleetCoords.flat().forEach((coord) => {
-    expect(gb.fleetIsSunk).toBe(false);
-    gb.receiveAttack(coord);
-  });
+  Object.values(defaultFleetDeploymentInfo)
+    .flat()
+    .forEach((coord) => {
+      expect(gb.fleetIsSunk).toBe(false);
+      gb.receiveAttack(coord);
+    });
   expect(gb.fleetIsSunk).toBe(true);
 });

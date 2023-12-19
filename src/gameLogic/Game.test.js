@@ -1,5 +1,35 @@
 const Game = require("./Game");
 
+const defaultFleetDeploymentInfo = {
+  Carrier: [
+    [4, 0],
+    [4, 1],
+    [4, 2],
+    [4, 3],
+    [4, 4],
+  ],
+  Battleship: [
+    [3, 0],
+    [3, 1],
+    [3, 2],
+    [3, 3],
+  ],
+  Cruiser: [
+    [2, 0],
+    [2, 1],
+    [2, 2],
+  ],
+  Submarine: [
+    [1, 0],
+    [1, 1],
+    [1, 2],
+  ],
+  "Patrol Boat": [
+    [0, 0],
+    [0, 1],
+  ],
+};
+
 let game;
 
 beforeEach(() => {
@@ -8,6 +38,8 @@ beforeEach(() => {
     playerTwoName: "Player Two",
   };
   game = new Game(playerNames);
+  game.deployPlayerOneFleet(defaultFleetDeploymentInfo);
+  game.deployPlayerTwoFleet(defaultFleetDeploymentInfo);
 });
 
 test("playRound returns the attack report data", () => {
@@ -35,6 +67,7 @@ test("if current player is AI it takes a turn", () => {
     playerOneName: "Human Player",
   };
   game = new Game(playerNames);
+  game.deployPlayerOneFleet(defaultFleetDeploymentInfo);
   game.playRound([0, 0]);
   expect(game.currentPlayer).toBe("Human Player");
 });
@@ -44,6 +77,7 @@ test("game ends only if all of one player's ships have sunk", () => {
     playerOneName: "Human Player",
   };
   game = new Game(playerNames);
+  game.deployPlayerOneFleet(defaultFleetDeploymentInfo);
   const fleetCoords = [
     [
       [0, 0],

@@ -8,23 +8,26 @@ class Gameboard {
 
   #receivedAttacks;
 
-  constructor(fleetCoords) {
-    if (fleetCoords == null) {
-      throw new Error("Gameboard requires fleet coordinates");
+  constructor(fleetDeploymentInfo) {
+    if (fleetDeploymentInfo == null) {
+      throw new Error("Gameboard requires fleet deployment info");
     }
-    this.#fleetCoords = fleetCoords.flat();
-    this.#fleetDeployment = Gameboard.#deployFleet(fleetCoords);
+    this.#fleetCoords = Object.values(fleetDeploymentInfo).flat();
+    this.#fleetDeployment = Gameboard.#deployFleet(fleetDeploymentInfo);
     this.#receivedAttacks = [];
   }
 
-  static #deployFleet(fleetCoords) {
-    const fleetCoordsWithShips = fleetCoords.map((shipCoords) => {
-      const newShip = new Ship(shipCoords.length);
-      return shipCoords.map((shipCoord) => ({
-        coord: shipCoord,
-        ship: newShip,
-      }));
-    });
+  static #deployFleet(fleetDeploymentInfo) {
+    const fleetCoordsWithShips = Object.entries(fleetDeploymentInfo).map(
+      ([shipType, shipCoords]) => {
+        const newShip = new Ship(shipCoords.length);
+        newShip.type = shipType;
+        return shipCoords.map((shipCoord) => ({
+          coord: shipCoord,
+          ship: newShip,
+        }));
+      }
+    );
     return fleetCoordsWithShips.flat();
   }
 
@@ -53,6 +56,7 @@ class Gameboard {
     return {
       isAHit: true,
       isShipSunk: attackedShip.isSunk,
+      shipType: attackedShip.type,
     };
   }
 

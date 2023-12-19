@@ -39,7 +39,7 @@ const defaultFleetDeploymentInfo = {
     [1, 1],
     [1, 2],
   ],
-  "Patrol Boat": [
+  Destroyer: [
     [0, 0],
     [0, 1],
   ],

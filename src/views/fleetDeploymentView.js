@@ -40,7 +40,7 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
   let currentShipInfo = fleetInfo.next().value;
   const instructionsTextHtml = buildTextHtml(
     "p",
-    `Admiral ${playerName},
+    `${playerName},
     Deploy your ${currentShipInfo.type}.
     (${currentShipInfo.length} Spaces Needed)`
   );
@@ -120,11 +120,11 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
         fleetDeploymentInfo[currentShipInfo.type] = deploymentCellsCoords;
         currentShipInfo = fleetInfo.next().value;
         if (currentShipInfo != null) {
-          instructionsTextHtml.innerText = `Admiral ${playerName}, 
+          instructionsTextHtml.innerText = `${playerName}, 
           Deploy your ${currentShipInfo.type}.
           (${currentShipInfo.length} Spaces Needed)`;
         } else {
-          instructionsTextHtml.innerText = `Admiral ${playerName}, 
+          instructionsTextHtml.innerText = `${playerName}, 
           Ready to deploy the fleet 
           at your command!`;
         }
@@ -154,13 +154,19 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
     if (currentShipInfo == null) deployFunc(fleetDeploymentInfo);
   });
 
+  const deploymentBtnContainer = wrapHtmlElements(
+    "div",
+    resetDeploymentBtn,
+    deployBtn
+  );
+  deploymentBtnContainer.classList.add("deployment-btn-container");
+
   const html = wrapHtmlElements(
     "div",
     instructionsTextHtml,
     rotateShipBtn,
     gameboardWithLabels,
-    resetDeploymentBtn,
-    deployBtn
+    deploymentBtnContainer
   );
   html.id = "fleet-deployment-container";
 

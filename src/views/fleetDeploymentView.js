@@ -51,12 +51,12 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
     "rotate-ship-btn",
     "rotate-ship-btn"
   );
-  rotateShipBtn.value = "Deploy Horizontally";
+  rotateShipBtn.value = "Deploying Horizontally";
   rotateShipBtn.addEventListener("click", () => {
     rotateShipBtn.value =
-      rotateShipBtn.value === "Deploy Horizontally"
-        ? "Deploy Vertically"
-        : "Deploy Horizontally";
+      rotateShipBtn.value === "Deploying Horizontally"
+        ? "Deploying Vertically"
+        : "Deploying Horizontally";
   });
 
   const gameboard = buildGameboardHtml();
@@ -73,7 +73,7 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
 
   function shipWillFit(clickedCellCoords) {
     const [x, y] = clickedCellCoords;
-    if (rotateShipBtn.value === "Deploy Horizontally")
+    if (rotateShipBtn.value === "Deploying Horizontally")
       return 10 - x >= currentShipInfo.length;
     return 10 - y >= currentShipInfo.length;
   }
@@ -81,7 +81,7 @@ export default function fleetDeploymentView(playerName, resetFunc, deployFunc) {
   function getDeploymentCellsCoords(clickedCellCoords) {
     const [x, y] = clickedCellCoords;
     return [...Array(currentShipInfo.length)].map((val, ind) => {
-      if (rotateShipBtn.value === "Deploy Horizontally") return [x + ind, y];
+      if (rotateShipBtn.value === "Deploying Horizontally") return [x + ind, y];
       return [x, y + ind];
     });
   }

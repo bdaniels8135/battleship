@@ -7,11 +7,14 @@ class Player {
 
   #movesGen;
 
+  #type;
+
   constructor(name, type) {
     this.#name = name;
     if (type !== "Human") this.#isAI = true;
     else this.#isAI = false;
-    if (this.#isAI) this.#movesGen = Player.#buildMovesGen();
+    if (this.#isAI) this.#movesGen = Player.#buildRandomMoveGen();
+    this.#type = type;
   }
 
   get name() {
@@ -22,10 +25,10 @@ class Player {
     return this.#isAI;
   }
 
-  static *#buildMovesGen() {
-    const legalMoves = [...Array(100)].map((val, ind) => [
-      ind % 10,
-      Math.floor(ind / 10),
+  static *#buildRandomMoveGen() {
+    const legalMoves = [...Array(100).keys()].map((val) => [
+      val % 10,
+      Math.floor(val / 10),
     ]);
     while (legalMoves.length !== 0) {
       const randomMoveIndex = Math.floor(Math.random() * legalMoves.length);
@@ -35,7 +38,7 @@ class Player {
 
   getAIMove() {
     if (!this.#isAI)
-      throw new Error("Human players cannot use AI move generator");
+      throw new Error("human players cannot use AI move generator");
     return this.#movesGen.next().value;
   }
 
@@ -45,7 +48,7 @@ class Player {
       Battleship: 4,
       Cruiser: 3,
       Submarine: 3,
-      "Patrol Boat": 2,
+      Destroyer: 2,
     };
     const fleetDeploymentInfo = {};
     const occupiedCoords = [];

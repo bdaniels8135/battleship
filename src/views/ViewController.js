@@ -36,7 +36,7 @@ export default function ViewController() {
   }
 
   function displayTurnTransitionModal(announcementText) {
-    const modalTextBox = document.querySelector("#modal-text-box");
+    const modalTextBox = document.querySelector("#modal-text");
     modalTextBox.innerText = announcementText;
     ttm.showModal();
   }

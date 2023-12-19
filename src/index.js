@@ -96,9 +96,9 @@ function deployPlayerOneFleetClickFunc(game) {
   };
 }
 
-function newStartBtnClickFunc(playerNames) {
-  const game = new Game(playerNames);
-  const { playerOneName, playerTwoName } = playerNames;
+function newStartBtnClickFunc(playerInfo) {
+  const game = new Game(playerInfo);
+  const { playerOneName, playerTwoName } = playerInfo;
   if (playerOneName)
     VC.displayFleetDeploymentView(
       playerOneName,

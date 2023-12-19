@@ -10,10 +10,11 @@ class Game {
 
   #opposingPlayer;
 
-  constructor(playerNames) {
-    const { playerOneName, playerTwoName } = playerNames;
-    this.#playerOne = new Player(playerOneName);
-    this.#playerTwo = new Player(playerTwoName);
+  constructor(playerInfo) {
+    const { playerOneName, playerTwoName, playerOneType, playerTwoType } =
+      playerInfo;
+    this.#playerOne = new Player(playerOneName, playerOneType);
+    this.#playerTwo = new Player(playerTwoName, playerTwoType);
     if (this.#playerOne.isAI)
       this.#playerOne.gb = new Gameboard(Player.getAIFleetDeploymentInfo());
     if (this.#playerTwo.isAI)

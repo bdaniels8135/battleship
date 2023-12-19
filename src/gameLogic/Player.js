@@ -7,9 +7,10 @@ class Player {
 
   #movesGen;
 
-  constructor(name) {
-    this.#name = name || "Skynet";
-    this.#isAI = !name;
+  constructor(name, type) {
+    this.#name = name;
+    if (type !== "Human") this.#isAI = true;
+    else this.#isAI = false;
     if (this.#isAI) this.#movesGen = Player.#buildMovesGen();
   }
 

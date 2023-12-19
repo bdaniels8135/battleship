@@ -5,8 +5,8 @@ let humanPlayer;
 let AIPlayer;
 
 beforeEach(() => {
-  humanPlayer = new Player("Player Name");
-  AIPlayer = new Player();
+  humanPlayer = new Player("Player Name", "Human");
+  AIPlayer = new Player("Skynet", "Computer");
 });
 
 test("players have a name", () => {

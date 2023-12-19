@@ -93,6 +93,8 @@ export default function gameStartView(startBtnClickFunc) {
       startBtnClickFunc({
         playerOneName: playerOneNameInput.value.trim(),
         playerTwoName: playerTwoNameInput.value.trim(),
+        playerOneType: playerOneTypeSelect.value,
+        playerTwoType: playerTwoTypeSelect.value,
       });
     }
   });

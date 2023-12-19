@@ -33,11 +33,13 @@ const defaultFleetDeploymentInfo = {
 let game;
 
 beforeEach(() => {
-  const playerNames = {
+  const playerInfo = {
     playerOneName: "Player One",
     playerTwoName: "Player Two",
+    playerOneType: "Human",
+    playerTwoType: "Human",
   };
-  game = new Game(playerNames);
+  game = new Game(playerInfo);
   game.deployPlayerOneFleet(defaultFleetDeploymentInfo);
   game.deployPlayerTwoFleet(defaultFleetDeploymentInfo);
 });
@@ -63,10 +65,13 @@ test("switches current player after a round is played", () => {
 });
 
 test("if current player is AI it takes a turn", () => {
-  const playerNames = {
+  const playerInfo = {
     playerOneName: "Human Player",
+    playerOneType: "Human",
+    playerTwoName: "Skynet",
+    playerTwoType: "Computer",
   };
-  game = new Game(playerNames);
+  game = new Game(playerInfo);
   game.deployPlayerOneFleet(defaultFleetDeploymentInfo);
   game.playRound([0, 0]);
   expect(game.currentPlayer).toBe("Human Player");

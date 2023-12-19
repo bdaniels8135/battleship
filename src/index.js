@@ -17,15 +17,21 @@ function getGameOverDisplayInfo(game) {
   };
 }
 
-function getRoundDisplayInfo(game, roundResult, attackCoord) {
+function getRoundDisplayInfo(game, roundResult, attackCoords) {
   let resultString;
   if (roundResult != null) {
+    const attackCoordsString = `${String.fromCharCode(attackCoords[1] + 65)}${
+      attackCoords[0] + 1
+    }`;
     if (roundResult.isShipSunk) {
-      resultString = `${attackCoord} Attacked!\n${roundResult.attackedPlayer}'s ship was sunk!`;
+      resultString = `${attackCoordsString} Attacked.
+      ${roundResult.attackedPlayer}'s ${roundResult.shipType} was sunk!`;
     } else if (roundResult.isAHit) {
-      resultString = `${attackCoord} Attacked!\n ${roundResult.attackedPlayer}'s ship was hit!`;
+      resultString = `${attackCoordsString} Attacked.
+      ${roundResult.attackedPlayer}'s ship was hit!`;
     } else
-      resultString = `${attackCoord} Attacked!\n ${roundResult.attackingPlayer} missed!`;
+      resultString = `${attackCoordsString} Attacked.
+      ${roundResult.attackingPlayer} missed!`;
   }
   return {
     lastMoveResultString: resultString ?? "This is war!\n ",
@@ -64,17 +70,51 @@ function buildGridCellClickFunc(game) {
   };
 }
 
-function startBtnClickFunc(playerNames) {
-  const game = new Game(playerNames);
-
-  if (game.isOver) {
-    const gameOverDisplayInfo = getGameOverDisplayInfo(game);
-    VC.displayGameOverView(gameOverDisplayInfo);
-  } else {
+function deployPlayerTwoFleetClickFunc(game) {
+  return (fleetDeploymentInfo) => {
+    game.deployPlayerTwoFleet(fleetDeploymentInfo);
     const roundDisplayInfo = getRoundDisplayInfo(game);
     const gridCellClickFunc = buildGridCellClickFunc(game);
     VC.displayPlayRoundView(roundDisplayInfo, gridCellClickFunc);
+  };
+}
+
+function deployPlayerOneFleetClickFunc(game) {
+  return (fleetDeploymentInfo) => {
+    game.deployPlayerOneFleet(fleetDeploymentInfo);
+    if (game.playerTwo !== "Skynet")
+      VC.displayFleetDeploymentView(
+        game.playerTwo,
+        VC.displayFleetDeploymentView,
+        deployPlayerTwoFleetClickFunc(game)
+      );
+    else {
+      const roundDisplayInfo = getRoundDisplayInfo(game);
+      const gridCellClickFunc = buildGridCellClickFunc(game);
+      VC.displayPlayRoundView(roundDisplayInfo, gridCellClickFunc);
+    }
+  };
+}
+
+function newStartBtnClickFunc(playerNames) {
+  const game = new Game(playerNames);
+  const { playerOneName, playerTwoName } = playerNames;
+  if (playerOneName)
+    VC.displayFleetDeploymentView(
+      playerOneName,
+      VC.displayFleetDeploymentView,
+      deployPlayerOneFleetClickFunc(game)
+    );
+  else if (playerTwoName)
+    VC.displayFleetDeploymentView(
+      playerTwoName,
+      VC.displayFleetDeploymentView,
+      deployPlayerTwoFleetClickFunc(game)
+    );
+  else {
+    const gameOverDisplayInfo = getGameOverDisplayInfo(game);
+    VC.displayGameOverView(gameOverDisplayInfo);
   }
 }
 
-VC.displayGameStartView(startBtnClickFunc);
+VC.displayGameStartView(newStartBtnClickFunc);

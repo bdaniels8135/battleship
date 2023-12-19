@@ -25,7 +25,8 @@ class Player {
       Math.floor(ind / 10),
     ]);
     while (legalMoves.length !== 0) {
-      yield legalMoves.shift();
+      const randomMoveIndex = Math.floor(Math.random() * legalMoves.length);
+      yield legalMoves.splice(randomMoveIndex, 1)[0];
     }
   }
 

@@ -49,15 +49,6 @@ test("skynet getAIMove generates a legal coordinate", () => {
   expect(getAIMoveReturnValue[1]).toBeLessThanOrEqual(9);
 });
 
-// test.only.each([...Array(10)])(
-//   "getAIMove can generate 50 non-repeating coordinates",
-//   () => {
-//     const generatedMoves = [...Array(50)].map(() => skynetPlayer.getAIMove());
-//     const uniqueMoves = new Set(generatedMoves);
-//     expect(generatedMoves.length).toBe(uniqueMoves.size);
-//   }
-// );
-
 test("getAIMove throws error if player is not AI", () => {
   function humanAIMove() {
     humanPlayer.getAIMove();

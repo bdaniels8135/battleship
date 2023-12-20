@@ -93,8 +93,11 @@ class Player {
       );
       this.#targetQ.push(...newTargets);
     }
-    if (this.#targetQ.length !== 0) return this.#targetQ.shift();
-    return this.#getRandomLegalMove();
+    let nextAttackCoords;
+    if (this.#targetQ.length !== 0) nextAttackCoords = this.#targetQ.shift();
+    else nextAttackCoords = this.#getRandomLegalMove();
+    this.#previousAttackCoords.push(nextAttackCoords);
+    return nextAttackCoords;
   }
 
   static getAIFleetDeploymentInfo() {

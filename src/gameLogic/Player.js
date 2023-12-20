@@ -7,20 +7,29 @@ class Player {
 
   #randomMovesGen;
 
-  #targetedMoveGen;
+  #legalMoves;
+
+  #targetQ;
+
+  #previousAttackCoords;
 
   #type;
 
   constructor(name, type) {
     this.#name = name;
+    this.#type = type;
+    this.lastAttackReport = {};
     if (type !== "Human") this.#isAI = true;
     else this.#isAI = false;
     if (this.#type === "Battle Droid")
       this.#randomMovesGen = Player.#buildRandomMoveGen();
-    if (this.#type === "Skynet")
-      this.#targetedMoveGen = Player.#buildTargetedMoveGen();
-    this.#type = type;
-    this.lastAttackReport = null;
+    if (this.#type === "Skynet") {
+      this.#legalMoves = [...Array(50).keys()]
+        .map((val) => 2 * val)
+        .map((val) => [val % 10, Math.floor(val / 10)]);
+      this.#targetQ = [];
+      this.#previousAttackCoords = [];
+    }
   }
 
   get name() {
@@ -50,48 +59,42 @@ class Player {
     return null;
   }
 
-  static #buildTargetedMoveGen() {
-    const legalMoves = [...Array(50).keys()]
-      .map((val) => 2 * val)
-      .map((val) => [val % 10, Math.floor[val / 10]]);
-    const targetQ = [];
-    const previousAttackCoords = [];
+  static #coordIsLegal(coord) {
+    const [x, y] = coord;
+    return x >= 0 && x <= 9 && y >= 0 && y <= 9;
+  }
 
-    function coordIsLegal([x, y]) {
-      return x >= 0 && x <= 9 && y >= 0 && y <= 9;
+  #coordHasBeenAttacked(coord) {
+    return this.#previousAttackCoords.some((prevAttCoord) =>
+      _.isEqual(coord, prevAttCoord)
+    );
+  }
+
+  #getRandomLegalMove() {
+    while (true) {
+      const randomInd = Math.floor(Math.random() * this.#legalMoves.length);
+      const proposedMove = this.#legalMoves.splice(randomInd, 1)[0];
+      if (!this.#coordHasBeenAttacked(proposedMove)) return proposedMove;
     }
+  }
 
-    function coordHasBeenAttacked(coord) {
-      return previousAttackCoords.every(
-        (prevAttCoord) => !_.isEqual(coord, prevAttCoord)
+  #targetedMoveGen() {
+    if (this.lastAttackReport.isAHit && !this.lastAttackReport.isShipSunk) {
+      const [lastX, lastY] = this.lastAttackReport.coord;
+      const adjCoords = [
+        [lastX + 1, lastY],
+        [lastX - 1, lastY],
+        [lastX, lastY + 1],
+        [lastX, lastY - 1],
+      ];
+      const newTargets = adjCoords.filter(
+        (coord) =>
+          Player.#coordIsLegal(coord) && !this.#coordHasBeenAttacked(coord)
       );
+      this.#targetQ.push(...newTargets);
     }
-
-    function getRandomLegalMove() {
-      while (true) {
-        const randomInd = Math.floor(Math.random() * legalMoves.length);
-        const proposedMove = legalMoves.splice(randomInd, 1)[0];
-        if (!coordHasBeenAttacked(proposedMove)) return proposedMove;
-      }
-    }
-
-    return () => {
-      if (this.lastAttackReport.isAHit && !this.lastAttackReport.isShipSunk) {
-        const [lastX, lastY] = this.lastAttackReport.coord;
-        const adjCoords = [
-          [lastX + 1, lastY],
-          [lastX - 1, lastY],
-          [lastX, lastY + 1],
-          [lastX, lastY - 1],
-        ];
-        const newTargets = adjCoords.filter(
-          (coord) => coordIsLegal(coord) && !coordHasBeenAttacked(coord)
-        );
-        targetQ.push(...newTargets);
-      }
-      if (targetQ.length !== 0) return targetQ.shift();
-      return getRandomLegalMove();
-    };
+    if (this.#targetQ.length !== 0) return this.#targetQ.shift();
+    return this.#getRandomLegalMove();
   }
 
   static getAIFleetDeploymentInfo() {

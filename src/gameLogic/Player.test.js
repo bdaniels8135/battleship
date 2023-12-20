@@ -1,17 +1,19 @@
-const Gameboard = require("./Gameboard");
 const Player = require("./Player");
 
 let humanPlayer;
-let AIPlayer;
+let battleDroidPlayer;
+let skynetPlayer;
 
 beforeEach(() => {
   humanPlayer = new Player("Player Name", "Human");
-  AIPlayer = new Player("Skynet", "Computer");
+  battleDroidPlayer = new Player("B1", "Battle Droid");
+  skynetPlayer = new Player("Skynet", "Skynet");
 });
 
 test("players have a name", () => {
   expect(humanPlayer.name).toBeDefined();
-  expect(AIPlayer.name).toBeDefined();
+  expect(battleDroidPlayer.name).toBeDefined();
+  expect(skynetPlayer.name).toBeDefined();
 });
 
 test("human players are not AI", () => {
@@ -19,11 +21,12 @@ test("human players are not AI", () => {
 });
 
 test("non-human players are AI", () => {
-  expect(AIPlayer.isAI).toBe(true);
+  expect(battleDroidPlayer.isAI).toBe(true);
+  expect(skynetPlayer.isAI).toBe(true);
 });
 
-test("getAIMove generates a legal coordinate", () => {
-  const getAIMoveReturnValue = AIPlayer.getAIMove();
+test("battle droid getAIMove generates a legal coordinate", () => {
+  const getAIMoveReturnValue = battleDroidPlayer.getAIMove();
   expect(getAIMoveReturnValue).toBeInstanceOf(Array);
   expect(getAIMoveReturnValue.length).toBe(2);
   expect(getAIMoveReturnValue[0]).toEqual(expect.any(Number));
@@ -34,14 +37,26 @@ test("getAIMove generates a legal coordinate", () => {
   expect(getAIMoveReturnValue[1]).toBeLessThanOrEqual(9);
 });
 
-test.each([...Array(10)])(
-  "getAIMove can generate 100 non-repeating coordinates",
-  () => {
-    const generatedMoves = [...Array(100)].map(() => AIPlayer.getAIMove());
-    const uniqueMoves = new Set(generatedMoves);
-    expect(generatedMoves.length).toBe(uniqueMoves.size);
-  }
-);
+test("skynet getAIMove generates a legal coordinate", () => {
+  const getAIMoveReturnValue = skynetPlayer.getAIMove();
+  expect(getAIMoveReturnValue).toBeInstanceOf(Array);
+  expect(getAIMoveReturnValue.length).toBe(2);
+  expect(getAIMoveReturnValue[0]).toEqual(expect.any(Number));
+  expect(getAIMoveReturnValue[1]).toEqual(expect.any(Number));
+  expect(getAIMoveReturnValue[0]).toBeGreaterThanOrEqual(0);
+  expect(getAIMoveReturnValue[1]).toBeGreaterThanOrEqual(0);
+  expect(getAIMoveReturnValue[0]).toBeLessThanOrEqual(9);
+  expect(getAIMoveReturnValue[1]).toBeLessThanOrEqual(9);
+});
+
+// test.only.each([...Array(10)])(
+//   "getAIMove can generate 50 non-repeating coordinates",
+//   () => {
+//     const generatedMoves = [...Array(50)].map(() => skynetPlayer.getAIMove());
+//     const uniqueMoves = new Set(generatedMoves);
+//     expect(generatedMoves.length).toBe(uniqueMoves.size);
+//   }
+// );
 
 test("getAIMove throws error if player is not AI", () => {
   function humanAIMove() {

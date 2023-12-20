@@ -21,7 +21,7 @@ class Game {
       this.#playerTwo.gb = new Gameboard(Player.getAIFleetDeploymentInfo());
     this.#currentPlayer = this.#playerOne;
     this.#opposingPlayer = this.#playerTwo;
-    if (!playerOneName) this.playRound(this.#currentPlayer.getAIMove());
+    if (this.#playerOne.isAI) this.playRound(this.#playerOne.getAIMove());
   }
 
   playRound(attackCoords) {
@@ -61,16 +61,32 @@ class Game {
     return this.#playerOne.name;
   }
 
+  get playerOneIsAI() {
+    return this.#playerOne.isAI;
+  }
+
   get playerTwo() {
     return this.#playerTwo.name;
+  }
+
+  get playerTwoIsAI() {
+    return this.#playerTwo.isAI;
   }
 
   get currentPlayer() {
     return this.#currentPlayer.name;
   }
 
+  get currentPlayerIsAI() {
+    return this.#currentPlayer.isAI;
+  }
+
   get opposingPlayer() {
     return this.#opposingPlayer.name;
+  }
+
+  get opposingPlayerIsAI() {
+    return this.#opposingPlayer.isAI;
   }
 
   get isOver() {

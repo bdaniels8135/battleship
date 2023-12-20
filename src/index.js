@@ -63,7 +63,7 @@ function buildGridCellClickFunc(game) {
         roundResult,
         attackCoord
       );
-      if (game.opposingPlayer !== "Skynet")
+      if (!game.opposingPlayerIsAI)
         VC.displayTurnTransitionModal(roundDisplayInfo.lastMoveResultString);
       VC.displayPlayRoundView(roundDisplayInfo, gridCellClickFunc);
     }
@@ -82,7 +82,7 @@ function deployPlayerTwoFleetClickFunc(game) {
 function deployPlayerOneFleetClickFunc(game) {
   return (fleetDeploymentInfo) => {
     game.deployPlayerOneFleet(fleetDeploymentInfo);
-    if (game.playerTwo !== "Skynet")
+    if (!game.playerTwoIsAI)
       VC.displayFleetDeploymentView(
         game.playerTwo,
         VC.displayFleetDeploymentView,
@@ -99,13 +99,13 @@ function deployPlayerOneFleetClickFunc(game) {
 function newStartBtnClickFunc(playerInfo) {
   const game = new Game(playerInfo);
   const { playerOneName, playerTwoName } = playerInfo;
-  if (playerOneName)
+  if (!game.playerOneIsAI)
     VC.displayFleetDeploymentView(
       playerOneName,
       VC.displayFleetDeploymentView,
       deployPlayerOneFleetClickFunc(game)
     );
-  else if (playerTwoName)
+  else if (!game.playerTwoIsAI)
     VC.displayFleetDeploymentView(
       playerTwoName,
       VC.displayFleetDeploymentView,

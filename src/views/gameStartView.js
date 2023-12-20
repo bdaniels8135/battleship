@@ -91,8 +91,8 @@ export default function gameStartView(startBtnClickFunc) {
       playerTwoTypeSelect.value !== ""
     ) {
       startBtnClickFunc({
-        playerOneName: playerOneNameInput.value.trim(),
-        playerTwoName: playerTwoNameInput.value.trim(),
+        playerOneName: playerOneNameInput.value.trim() || "Skynet",
+        playerTwoName: playerTwoNameInput.value.trim() || "Skynet",
         playerOneType: playerOneTypeSelect.value,
         playerTwoType: playerTwoTypeSelect.value,
       });

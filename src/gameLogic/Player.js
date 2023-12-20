@@ -5,7 +5,7 @@ class Player {
 
   #isAI;
 
-  #movesGen;
+  #randomMovesGen;
 
   #type;
 
@@ -13,7 +13,7 @@ class Player {
     this.#name = name;
     if (type !== "Human") this.#isAI = true;
     else this.#isAI = false;
-    if (this.#isAI) this.#movesGen = Player.#buildRandomMoveGen();
+    if (this.#isAI) this.#randomMovesGen = Player.#buildRandomMoveGen();
     this.#type = type;
   }
 
@@ -39,18 +39,17 @@ class Player {
   getAIMove() {
     if (!this.#isAI)
       throw new Error("human players cannot use AI move generator");
-    return this.#movesGen.next().value;
+    return this.#randomMovesGen.next().value;
   }
 
   static getAIFleetDeploymentInfo() {
-    const shipsWithLengths = {
-      Carrier: 5,
-      Battleship: 4,
-      Cruiser: 3,
-      Submarine: 3,
-      Destroyer: 2,
-    };
-    const fleetDeploymentInfo = {};
+    const shipsWithLengths = [
+      ["Carrier", 5],
+      ["Battleship", 4],
+      ["Cruiser", 3],
+      ["Submarine", 3],
+      ["Destroyer", 2],
+    ];
     const occupiedCoords = [];
 
     function shipWillFit(startCoords, direction, length) {
@@ -58,43 +57,49 @@ class Player {
       return 10 - startCoords[1] >= length;
     }
 
-    Object.entries(shipsWithLengths).forEach(([shipType, length]) => {
+    function coordsAreUnoccupied(coords) {
+      return coords.every((coord) =>
+        occupiedCoords.every((occCoord) => !_.isEqual(coord, occCoord))
+      );
+    }
+
+    const shipsWithCoords = shipsWithLengths.map(([type, length]) => {
       while (true) {
         const startPos = Math.floor(Math.random() * 100);
         const startCoords = [startPos % 10, Math.floor(startPos / 10)];
         const direction = Math.floor(Math.random() * 2);
         if (shipWillFit(startCoords, direction, length)) {
-          const shipCoords = [];
           if (direction === 0) {
-            for (let i = 0; i < length; i += 1) {
-              const nextCoords = [startCoords[0] + i, startCoords[1]];
-              if (
-                !occupiedCoords.some((coords) => _.isEqual(coords, nextCoords))
-              )
-                shipCoords.push(nextCoords);
-            }
-            if (shipCoords.length === length) {
-              occupiedCoords.push(...shipCoords);
-              fleetDeploymentInfo[shipType] = shipCoords;
-              break;
+            const proposedShipCoords = [...Array(length).keys()].map((val) => [
+              startCoords[0] + val,
+              startCoords[1],
+            ]);
+            if (coordsAreUnoccupied(proposedShipCoords)) {
+              occupiedCoords.push(...proposedShipCoords);
+              return [type, proposedShipCoords];
             }
           } else {
-            for (let i = 0; i < length; i += 1) {
-              const nextCoords = [startCoords[0], startCoords[1] + i];
-              if (
-                !occupiedCoords.some((coords) => _.isEqual(coords, nextCoords))
-              )
-                shipCoords.push(nextCoords);
-            }
-            if (shipCoords.length === length) {
-              occupiedCoords.push(...shipCoords);
-              fleetDeploymentInfo[shipType] = shipCoords;
-              break;
+            const proposedShipCoords = [...Array(length).keys()].map((val) => [
+              startCoords[0],
+              startCoords[1] + val,
+            ]);
+            if (coordsAreUnoccupied(proposedShipCoords)) {
+              occupiedCoords.push(...proposedShipCoords);
+              return [type, proposedShipCoords];
             }
           }
         }
       }
     });
+
+    const fleetDeploymentInfo = shipsWithCoords.reduce(
+      (acc, [type, coords]) => ({
+        ...acc,
+        [type]: coords,
+      }),
+      {}
+    );
+
     return fleetDeploymentInfo;
   }
 }

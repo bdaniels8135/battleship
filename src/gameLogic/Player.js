@@ -7,14 +7,20 @@ class Player {
 
   #randomMovesGen;
 
+  #targetedMoveGen;
+
   #type;
 
   constructor(name, type) {
     this.#name = name;
     if (type !== "Human") this.#isAI = true;
     else this.#isAI = false;
-    if (this.#isAI) this.#randomMovesGen = Player.#buildRandomMoveGen();
+    if (this.#type === "Battle Droid")
+      this.#randomMovesGen = Player.#buildRandomMoveGen();
+    if (this.#type === "Skynet")
+      this.#targetedMoveGen = Player.#buildTargetedMoveGen();
     this.#type = type;
+    this.lastAttackReport = null;
   }
 
   get name() {
@@ -39,7 +45,53 @@ class Player {
   getAIMove() {
     if (!this.#isAI)
       throw new Error("human players cannot use AI move generator");
-    return this.#randomMovesGen.next().value;
+    if (this.#type === "Battle Droid") return this.#randomMovesGen.next().value;
+    if (this.#type === "Skynet") return this.#targetedMoveGen();
+    return null;
+  }
+
+  static #buildTargetedMoveGen() {
+    const legalMoves = [...Array(50).keys()]
+      .map((val) => 2 * val)
+      .map((val) => [val % 10, Math.floor[val / 10]]);
+    const targetQ = [];
+    const previousAttackCoords = [];
+
+    function coordIsLegal([x, y]) {
+      return x >= 0 && x <= 9 && y >= 0 && y <= 9;
+    }
+
+    function coordHasBeenAttacked(coord) {
+      return previousAttackCoords.every(
+        (prevAttCoord) => !_.isEqual(coord, prevAttCoord)
+      );
+    }
+
+    function getRandomLegalMove() {
+      while (true) {
+        const randomInd = Math.floor(Math.random() * legalMoves.length);
+        const proposedMove = legalMoves.splice(randomInd, 1)[0];
+        if (!coordHasBeenAttacked(proposedMove)) return proposedMove;
+      }
+    }
+
+    return () => {
+      if (this.lastAttackReport.isAHit && !this.lastAttackReport.isShipSunk) {
+        const [lastX, lastY] = this.lastAttackReport.coord;
+        const adjCoords = [
+          [lastX + 1, lastY],
+          [lastX - 1, lastY],
+          [lastX, lastY + 1],
+          [lastX, lastY - 1],
+        ];
+        const newTargets = adjCoords.filter(
+          (coord) => coordIsLegal(coord) && !coordHasBeenAttacked(coord)
+        );
+        targetQ.push(...newTargets);
+      }
+      if (targetQ.length !== 0) return targetQ.shift();
+      return getRandomLegalMove();
+    };
   }
 
   static getAIFleetDeploymentInfo() {

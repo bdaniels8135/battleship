@@ -12,12 +12,17 @@ function buildPlayerTypeSelect(playerNumText) {
   defaultOption.setAttribute("selected", "");
   defaultOption.setAttribute("disabled", "");
   const humanPlayerOption = buildSelectOption("Human", "Human");
-  const computerPlayerOption = buildSelectOption("Computer", "Computer");
+  const battleDroidPlayerOption = buildSelectOption(
+    "Battle Droid",
+    "Battle Droid"
+  );
+  const skynetPlayerOption = buildSelectOption("Skynet", "Skynet");
   const playerTypeSelect = wrapHtmlElements(
     "select",
     defaultOption,
     humanPlayerOption,
-    computerPlayerOption
+    battleDroidPlayerOption,
+    skynetPlayerOption
   );
   playerTypeSelect.id = `player-${playerNumText.toLowerCase()}-select`;
   return playerTypeSelect;
@@ -91,8 +96,10 @@ export default function gameStartView(startBtnClickFunc) {
       playerTwoTypeSelect.value !== ""
     ) {
       startBtnClickFunc({
-        playerOneName: playerOneNameInput.value.trim() || "Skynet",
-        playerTwoName: playerTwoNameInput.value.trim() || "Skynet",
+        playerOneName:
+          playerOneNameInput.value.trim() || playerOneTypeSelect.value,
+        playerTwoName:
+          playerTwoNameInput.value.trim() || playerTwoTypeSelect.value,
         playerOneType: playerOneTypeSelect.value,
         playerTwoType: playerTwoTypeSelect.value,
       });

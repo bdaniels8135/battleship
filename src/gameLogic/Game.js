@@ -28,6 +28,7 @@ class Game {
     if (this.isOver) throw new Error("Cannot play rounds after game ends");
 
     const attackReport = this.#opposingPlayer.gb.receiveAttack(attackCoords);
+    this.#currentPlayer.lastAttackReport = attackReport;
     attackReport.attackedPlayer = this.#opposingPlayer.name;
     attackReport.attackingPlayer = this.#currentPlayer.name;
 

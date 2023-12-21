@@ -102,22 +102,52 @@ class Player {
     return proposedRandomMove;
   }
 
-  #advancedAIMoveGen() {
-    const shipLengths = [5, 4, 3, 3, 2];
-    const directions = [0, 1];
+  #advancedMoveGen() {
+    const shipsWithLengths = {
+      Carrier: 5,
+      Battleship: 4,
+      Cruiser: 3,
+      Submarine: 3,
+      Destroyer: 2,
+    };
+    const PAD = this.#previousAttackData;
     const attackReport = this.lastAttackReport;
-    const lastAttackCoord = attackReport.coord;
-    if (lastAttackCoord != null) {
-      const lastAttackCoordString = `${lastAttackCoord[0]}${lastAttackCoord[1]}`;
-      this.#previousAttackData[lastAttackCoordString].wasAttacked = true;
-      this.#previousAttackData[lastAttackCoordString].wasAHit =
-        attackReport.isAHit;
-      this.#previousAttackData[lastAttackCoordString].shipIsSunk =
-        attackReport.isShipSunk;
+
+    if (attackReport.coord != null) {
+      const [lastX, lastY] = [attackReport.coord[0], attackReport.coord[1]];
+      const lastAttackCoordString = `${lastX}${lastY}`;
+      PAD[lastAttackCoordString].wasAttacked = true;
+      PAD[lastAttackCoordString].wasAHit = attackReport.isAHit;
+      if (attackReport.isShipSunk) {
+        const sunkShipLength = shipsWithLengths[attackReport.shipType];
+        const possibleShipCoords = [
+          [...Array(sunkShipLength).keys()].map((val) => [lastX + val, lastY]),
+          [...Array(sunkShipLength).keys()].map((val) => [lastX - val, lastY]),
+          [...Array(sunkShipLength).keys()].map((val) => [lastX, lastY + val]),
+          [...Array(sunkShipLength).keys()].map((val) => [lastX, lastY - val]),
+        ].filter((coords) =>
+          coords.every(
+            ([x, y]) =>
+              PAD[`${x}${y}`] &&
+              PAD[`${x}${y}`].wasAttacked &&
+              PAD[`${x}${y}`].wasAHit &&
+              !PAD[`${x}${y}`].shipIsSunk
+          )
+        );
+        if (possibleShipCoords.length === 1)
+          possibleShipCoords
+            .flat()
+            .map(([x, y]) => `${x}${y}`)
+            .forEach((coordString) => {
+              PAD[coordString].shipIsSunk = true;
+            });
+      }
     }
 
+    const shipLengths = Object.values(shipsWithLengths);
+    const directions = [0, 1];
     const weights = {};
-    Object.keys(this.#previousAttackData).forEach((coordString) => {
+    Object.keys(PAD).forEach((coordString) => {
       const [coordX, coordY] = [Number(coordString[0]), Number(coordString[1])];
       shipLengths.forEach((length) => {
         directions.forEach((direction) => {
@@ -128,12 +158,10 @@ class Player {
             .filter(([x, y]) => x >= 0 && x <= 9 && y >= 0 && y <= 9);
           if (coordsOnGrid.length === length) {
             const notAttackedCoords = coordsOnGrid.filter(
-              ([x, y]) => !this.#previousAttackData[`${x}${y}`].wasAttacked
+              ([x, y]) => !PAD[`${x}${y}`].wasAttacked
             );
             const hitButNotSunkCoords = coordsOnGrid.filter(
-              ([x, y]) =>
-                this.#previousAttackData[`${x}${y}`].wasAHit &&
-                !this.#previousAttackData[`${x}${y}`].shipIsSunk
+              ([x, y]) => PAD[`${x}${y}`].wasAHit && !PAD[`${x}${y}`].shipIsSunk
             );
             if (
               notAttackedCoords.length + hitButNotSunkCoords.length ===
@@ -156,7 +184,7 @@ class Player {
                     _.isEqual(ATHBNSCoord, [x, y])
                   )
                 )
-                  weights[`${x}${y}`] += 100;
+                  weights[`${x}${y}`] += 100 * hitButNotSunkCoords.length;
               });
             }
           }
@@ -175,7 +203,7 @@ class Player {
     if (!this.#isAI) throw new Error("human players cannot use getAIMove");
     if (this.#type === "Battle Droid") return this.#randomMovesGen.next().value;
     if (this.#type === "Joshua") return this.#targetedMoveGen();
-    if (this.#type === "Skynet") return this.#advancedAIMoveGen();
+    if (this.#type === "Skynet") return this.#advancedMoveGen();
     return null;
   }
 

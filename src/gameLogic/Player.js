@@ -144,7 +144,6 @@ class Player {
               PAD[coordString].shipIsSunk = true;
             });
         delete this.#shipsToHunt[attackReport.shipType];
-        console.log(this.#shipsToHunt);
       }
     }
 

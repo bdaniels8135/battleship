@@ -13,7 +13,7 @@ function buildPlayerTypeSelect(playerNumText) {
   defaultOption.setAttribute("disabled", "");
   const humanPlayerOption = buildSelectOption("Human", "Human");
   const battleDroidPlayerOption = buildSelectOption(
-    "Battle Droid (Easy)",
+    "B1 (Easy)",
     "Battle Droid"
   );
   const joshuaPlayerOption = buildSelectOption("Joshua (Med)", "Joshua");

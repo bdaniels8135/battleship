@@ -25,12 +25,15 @@ function getRoundDisplayInfo(game, roundResult, attackCoords) {
     }`;
     if (roundResult.isShipSunk) {
       resultString = `${attackCoordsString} Attacked.
+
       ${roundResult.attackedPlayer}'s ${roundResult.shipType} was sunk!`;
     } else if (roundResult.isAHit) {
       resultString = `${attackCoordsString} Attacked.
+
       ${roundResult.attackedPlayer}'s ship was hit!`;
     } else
       resultString = `${attackCoordsString} Attacked.
+
       ${roundResult.attackingPlayer} missed!`;
   }
   return {
@@ -63,8 +66,12 @@ function buildGridCellClickFunc(game) {
         roundResult,
         attackCoord
       );
-      if (!game.opposingPlayerIsAI)
-        VC.displayTurnTransitionModal(roundDisplayInfo.lastMoveResultString);
+      if (!game.opposingPlayerIsAI) {
+        const modalText = `${roundDisplayInfo.lastMoveResultString}
+
+        Pass the device to ${game.currentPlayer}.`;
+        VC.displayTurnTransitionModal(modalText);
+      }
       VC.displayPlayRoundView(roundDisplayInfo, gridCellClickFunc);
     }
   };
@@ -76,6 +83,11 @@ function deployPlayerTwoFleetClickFunc(game) {
     game.start();
     const roundDisplayInfo = getRoundDisplayInfo(game);
     const gridCellClickFunc = buildGridCellClickFunc(game);
+    if (!game.playerOneIsAI) {
+      const modalText = `Deployment phase complete.
+      Pass the device to ${game.playerOne}.`;
+      VC.displayTurnTransitionModal(modalText);
+    }
     VC.displayPlayRoundView(roundDisplayInfo, gridCellClickFunc);
   };
 }

@@ -15,7 +15,7 @@ export default function turnTransitionModal() {
     "next-player-btn",
     "next-player-btn"
   );
-  nextPlayerBtn.value = "Next Player Ready";
+  nextPlayerBtn.value = "Ready!";
   nextPlayerBtn.setAttribute("autofocus", "");
 
   const form = wrapHtmlElements("form", modalTextBox, nextPlayerBtn);

@@ -13,18 +13,19 @@ function buildPlayerTypeSelect(playerNumText) {
   defaultOption.setAttribute("disabled", "");
   const humanPlayerOption = buildSelectOption("Human", "Human");
   const battleDroidPlayerOption = buildSelectOption(
-    "Battle Droid",
+    "Battle Droid (easy)",
     "Battle Droid"
   );
-  const skynetPlayerOption = buildSelectOption("Skynet", "Skynet");
-  const joshuaPlayerOption = buildSelectOption("Joshua", "Joshua");
+  const joshuaPlayerOption = buildSelectOption("Joshua (med)", "Joshua");
+  const skynetPlayerOption = buildSelectOption("Skynet (hard)", "Skynet");
+
   const playerTypeSelect = wrapHtmlElements(
     "select",
     defaultOption,
     humanPlayerOption,
     battleDroidPlayerOption,
-    skynetPlayerOption,
-    joshuaPlayerOption
+    joshuaPlayerOption,
+    skynetPlayerOption
   );
   playerTypeSelect.id = `player-${playerNumText.toLowerCase()}-select`;
   return playerTypeSelect;

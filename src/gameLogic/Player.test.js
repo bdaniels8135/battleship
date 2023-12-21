@@ -109,19 +109,19 @@ test("battle droid players can generate 100 unique moves", () => {
   }, []);
 });
 
-test("skynet players can generate 50 unique moves with coords of same parity", () => {
+test("joshua players can generate 50 unique moves with coords of same parity", () => {
   [...Array(50)].reduce((acc) => {
-    const move = skynetPlayer.getAIMove();
+    const move = joshuaPlayer.getAIMove();
     expect(acc.every((elem) => !_.isEqual(elem, move))).toBe(true);
     expect((move[0] + move[1]) % 2 === 0).toBe(true);
     return [...acc, move];
   }, []);
 });
 
-test("joshua players can generate 50 unique moves", () => {
+test("skynet players can generate 50 unique moves", () => {
   [...Array(50)].reduce((acc) => {
-    const move = joshuaPlayer.getAIMove();
-    joshuaPlayer.lastAttackReport = { coord: move, isAHit: false };
+    const move = skynetPlayer.getAIMove();
+    skynetPlayer.lastAttackReport = { coord: move, isAHit: false };
     expect(acc.every((elem) => !_.isEqual(elem, move))).toBe(true);
     return [...acc, move];
   }, []);

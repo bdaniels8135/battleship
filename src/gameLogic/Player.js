@@ -25,14 +25,14 @@ class Player {
     else this.#isAI = false;
     if (this.#type === "Battle Droid")
       this.#randomMovesGen = Player.#buildRandomMoveGen();
-    if (this.#type === "Skynet") {
+    if (this.#type === "Joshua") {
       this.#legalMoves = [...Array(100).keys()]
         .map((val) => [val % 10, Math.floor(val / 10)])
         .filter(([x, y]) => (x + y) % 2 === 0);
       this.#targetQ = [];
       this.#previousAttackCoords = [];
     }
-    if (this.#type === "Joshua") {
+    if (this.#type === "Skynet") {
       this.#previousAttackData = [...Array(100).keys()]
         .map((val) => `${val % 10}${Math.floor(val / 10)}`)
         .reduce(
@@ -174,8 +174,8 @@ class Player {
   getAIMove() {
     if (!this.#isAI) throw new Error("human players cannot use getAIMove");
     if (this.#type === "Battle Droid") return this.#randomMovesGen.next().value;
-    if (this.#type === "Skynet") return this.#targetedMoveGen();
-    if (this.#type === "Joshua") return this.#advancedAIMoveGen();
+    if (this.#type === "Joshua") return this.#targetedMoveGen();
+    if (this.#type === "Skynet") return this.#advancedAIMoveGen();
     return null;
   }
 

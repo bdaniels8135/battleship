@@ -13,6 +13,8 @@ class Player {
 
   #previousAttackCoords;
 
+  #previousAttackData;
+
   #type;
 
   constructor(name, type) {
@@ -29,6 +31,14 @@ class Player {
         .filter(([x, y]) => (x + y) % 2 === 0);
       this.#targetQ = [];
       this.#previousAttackCoords = [];
+    }
+    if (this.#type === "Joshua") {
+      this.#previousAttackData = [...Array(100).keys()]
+        .map((val) => `${val % 10}${Math.floor(val / 10)}`)
+        .reduce(
+          (acc, curr) => ({ ...acc, [curr]: { wasAttacked: false } }),
+          {}
+        );
     }
   }
 
@@ -92,10 +102,83 @@ class Player {
     return proposedRandomMove;
   }
 
+  #advancedAIMoveGen() {
+    const shipLengths = [5, 4, 3, 3, 2];
+    const directions = [0, 1];
+    const attackReport = this.lastAttackReport;
+    const lastAttackCoord = attackReport.coord;
+    if (lastAttackCoord != null) {
+      const lastAttackCoordString = `${lastAttackCoord[0]}${lastAttackCoord[1]}`;
+      this.#previousAttackData[lastAttackCoordString].wasAttacked = true;
+      this.#previousAttackData[lastAttackCoordString].wasAHit =
+        attackReport.isAHit;
+      this.#previousAttackData[lastAttackCoordString].shipIsSunk =
+        attackReport.isShipSunk;
+    }
+
+    const weights = {};
+    Object.keys(this.#previousAttackData).forEach((coordString) => {
+      const [coordX, coordY] = [Number(coordString[0]), Number(coordString[1])];
+      shipLengths.forEach((length) => {
+        directions.forEach((direction) => {
+          const coordsOnGrid = [...Array(length).keys()]
+            .map((val) =>
+              direction === 0 ? [coordX + val, coordY] : [coordX, coordY + val]
+            )
+            .filter(([x, y]) => x >= 0 && x <= 9 && y >= 0 && y <= 9);
+          if (coordsOnGrid.length === length) {
+            const notAttackedCoords = coordsOnGrid.filter(
+              ([x, y]) => !this.#previousAttackData[`${x}${y}`].wasAttacked
+            );
+            const hitButNotSunkCoords = coordsOnGrid.filter(
+              ([x, y]) =>
+                this.#previousAttackData[`${x}${y}`].wasAHit &&
+                !this.#previousAttackData[`${x}${y}`].shipIsSunk
+            );
+            if (
+              notAttackedCoords.length + hitButNotSunkCoords.length ===
+              length
+            ) {
+              notAttackedCoords.forEach(([x, y]) => {
+                try {
+                  weights[`${x}${y}`] += 1;
+                } catch {
+                  weights[`${x}${y}`] = 1;
+                }
+              });
+              const adjToHitButNotSunkCoords = hitButNotSunkCoords.reduce(
+                (acc, [x, y]) =>
+                  direction === 0
+                    ? [...acc, [x - 1, y], [x + 1, y]]
+                    : [...acc, [x, y - 1], [x, y + 1]],
+                []
+              );
+              notAttackedCoords.forEach(([x, y]) => {
+                if (
+                  adjToHitButNotSunkCoords.some((ATHBNSCoord) =>
+                    _.isEqual(ATHBNSCoord, [x, y])
+                  )
+                )
+                  weights[`${x}${y}`] += 100;
+              });
+            }
+          }
+        });
+      });
+    });
+
+    const maxWeightedEntry = Object.entries(weights).reduce((acc, curr) =>
+      curr[1] > acc[1] ? curr : acc
+    );
+    const nextMoveCoordString = maxWeightedEntry[0];
+    return [Number(nextMoveCoordString[0]), Number(nextMoveCoordString[1])];
+  }
+
   getAIMove() {
     if (!this.#isAI) throw new Error("human players cannot use getAIMove");
     if (this.#type === "Battle Droid") return this.#randomMovesGen.next().value;
     if (this.#type === "Skynet") return this.#targetedMoveGen();
+    if (this.#type === "Joshua") return this.#advancedAIMoveGen();
     return null;
   }
 

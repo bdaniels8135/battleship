@@ -17,12 +17,14 @@ function buildPlayerTypeSelect(playerNumText) {
     "Battle Droid"
   );
   const skynetPlayerOption = buildSelectOption("Skynet", "Skynet");
+  const joshuaPlayerOption = buildSelectOption("Joshua", "Joshua");
   const playerTypeSelect = wrapHtmlElements(
     "select",
     defaultOption,
     humanPlayerOption,
     battleDroidPlayerOption,
-    skynetPlayerOption
+    skynetPlayerOption,
+    joshuaPlayerOption
   );
   playerTypeSelect.id = `player-${playerNumText.toLowerCase()}-select`;
   return playerTypeSelect;

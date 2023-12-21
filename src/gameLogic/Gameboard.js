@@ -46,7 +46,7 @@ class Gameboard {
       ).ship;
     } catch {
       this.#receivedAttacks.push({ attackCoord, wasAHit: false });
-      return { isAHit: false };
+      return { coord: attackCoord, isAHit: false };
     }
 
     attackedShip.hit();

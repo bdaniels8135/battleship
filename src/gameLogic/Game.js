@@ -21,6 +21,9 @@ class Game {
       this.#playerTwo.gb = new Gameboard(Player.getAIFleetDeploymentInfo());
     this.#currentPlayer = this.#playerOne;
     this.#opposingPlayer = this.#playerTwo;
+  }
+
+  start() {
     if (this.#playerOne.isAI) this.playRound(this.#playerOne.getAIMove());
   }
 

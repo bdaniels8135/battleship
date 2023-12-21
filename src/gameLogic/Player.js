@@ -52,21 +52,18 @@ class Player {
   }
 
   #targetedMoveGen() {
-    const coordIsLegal = (coord) => {
-      const [x, y] = coord;
-      return x >= 0 && x <= 9 && y >= 0 && y <= 9;
-    };
+    const coordIsLegal = ([x, y]) => x >= 0 && x <= 9 && y >= 0 && y <= 9;
 
-    const coordHasBeenAttacked = (coord) =>
-      this.#previousAttackCoords.some((prevAttCoord) =>
-        _.isEqual(coord, prevAttCoord)
+    const coordHasNotBeenAttacked = (coord) =>
+      this.#previousAttackCoords.every(
+        (prevAttCoord) => !_.isEqual(coord, prevAttCoord)
       );
 
     const getRandomLegalMove = () => {
       while (true) {
         const randomInd = Math.floor(Math.random() * this.#legalMoves.length);
         const proposedMove = this.#legalMoves.splice(randomInd, 1)[0];
-        if (!coordHasBeenAttacked(proposedMove)) return proposedMove;
+        if (coordHasNotBeenAttacked(proposedMove)) return proposedMove;
       }
     };
 
@@ -79,15 +76,20 @@ class Player {
         [lastX, lastY - 1],
       ];
       const newTargets = adjCoords.filter(
-        (coord) => coordIsLegal(coord) && !coordHasBeenAttacked(coord)
+        (coord) => coordIsLegal(coord) && coordHasNotBeenAttacked(coord)
       );
       this.#targetQ.push(...newTargets);
     }
-    let nextAttackCoords;
-    if (this.#targetQ.length !== 0) nextAttackCoords = this.#targetQ.shift();
-    else nextAttackCoords = getRandomLegalMove();
-    this.#previousAttackCoords.push(nextAttackCoords);
-    return nextAttackCoords;
+    while (this.#targetQ.length > 0) {
+      const proposedTargetedMove = this.#targetQ.shift();
+      if (coordHasNotBeenAttacked(proposedTargetedMove)) {
+        this.#previousAttackCoords.push(proposedTargetedMove);
+        return proposedTargetedMove;
+      }
+    }
+    const proposedRandomMove = getRandomLegalMove();
+    this.#previousAttackCoords.push(proposedRandomMove);
+    return proposedRandomMove;
   }
 
   getAIMove() {

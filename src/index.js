@@ -73,6 +73,7 @@ function buildGridCellClickFunc(game) {
 function deployPlayerTwoFleetClickFunc(game) {
   return (fleetDeploymentInfo) => {
     game.deployPlayerTwoFleet(fleetDeploymentInfo);
+    game.start();
     const roundDisplayInfo = getRoundDisplayInfo(game);
     const gridCellClickFunc = buildGridCellClickFunc(game);
     VC.displayPlayRoundView(roundDisplayInfo, gridCellClickFunc);
@@ -89,6 +90,7 @@ function deployPlayerOneFleetClickFunc(game) {
         deployPlayerTwoFleetClickFunc(game)
       );
     else {
+      game.start();
       const roundDisplayInfo = getRoundDisplayInfo(game);
       const gridCellClickFunc = buildGridCellClickFunc(game);
       VC.displayPlayRoundView(roundDisplayInfo, gridCellClickFunc);
@@ -112,6 +114,7 @@ function newStartBtnClickFunc(playerInfo) {
       deployPlayerTwoFleetClickFunc(game)
     );
   else {
+    game.start();
     const gameOverDisplayInfo = getGameOverDisplayInfo(game);
     VC.displayGameOverView(gameOverDisplayInfo);
   }

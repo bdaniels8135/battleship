@@ -26,7 +26,7 @@ function* shipInfoGen() {
       length: 3,
     },
     {
-      type: "Patrol Boat",
+      type: "Destroyer",
       length: 2,
     },
   ];

@@ -171,8 +171,9 @@ class Player {
               length
             ) {
               notAttackedCoords.forEach(([x, y]) => {
-                if (weights[`${x}${y}`] != null) weights[`${x}${y}`] += 1;
-                else weights[`${x}${y}`] = 1;
+                if (weights[`${x}${y}`] != null)
+                  weights[`${x}${y}`] += 6 - length;
+                else weights[`${x}${y}`] = 6 - length;
               });
               const adjToHitButNotSunkCoords = hitButNotSunkCoords.reduce(
                 (acc, [x, y]) =>

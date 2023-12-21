@@ -5,6 +5,8 @@ class Player {
 
   #isAI;
 
+  #type;
+
   #randomMovesGen;
 
   #legalMoves;
@@ -15,7 +17,7 @@ class Player {
 
   #previousAttackData;
 
-  #type;
+  #shipsToHunt;
 
   constructor(name, type) {
     this.#name = name;
@@ -39,6 +41,13 @@ class Player {
           (acc, curr) => ({ ...acc, [curr]: { wasAttacked: false } }),
           {}
         );
+      this.#shipsToHunt = {
+        Carrier: 5,
+        Battleship: 4,
+        Cruiser: 3,
+        Submarine: 3,
+        Destroyer: 2,
+      };
     }
   }
 
@@ -103,13 +112,6 @@ class Player {
   }
 
   #advancedMoveGen() {
-    const shipsWithLengths = {
-      Carrier: 5,
-      Battleship: 4,
-      Cruiser: 3,
-      Submarine: 3,
-      Destroyer: 2,
-    };
     const PAD = this.#previousAttackData;
     const attackReport = this.lastAttackReport;
 
@@ -119,7 +121,7 @@ class Player {
       PAD[lastAttackCoordString].wasAttacked = true;
       PAD[lastAttackCoordString].wasAHit = attackReport.isAHit;
       if (attackReport.isShipSunk) {
-        const sunkShipLength = shipsWithLengths[attackReport.shipType];
+        const sunkShipLength = this.#shipsToHunt[attackReport.shipType];
         const possibleShipCoords = [
           [...Array(sunkShipLength).keys()].map((val) => [lastX + val, lastY]),
           [...Array(sunkShipLength).keys()].map((val) => [lastX - val, lastY]),
@@ -141,10 +143,12 @@ class Player {
             .forEach((coordString) => {
               PAD[coordString].shipIsSunk = true;
             });
+        delete this.#shipsToHunt[attackReport.shipType];
+        console.log(this.#shipsToHunt);
       }
     }
 
-    const shipLengths = Object.values(shipsWithLengths);
+    const shipLengths = Object.values(this.#shipsToHunt);
     const directions = [0, 1];
     const weights = {};
     Object.keys(PAD).forEach((coordString) => {
@@ -184,7 +188,7 @@ class Player {
                     _.isEqual(ATHBNSCoord, [x, y])
                   )
                 )
-                  weights[`${x}${y}`] += 100 * hitButNotSunkCoords.length;
+                  weights[`${x}${y}`] += 100 * hitButNotSunkCoords.length ** 2;
               });
             }
           }

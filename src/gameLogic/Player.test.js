@@ -4,17 +4,20 @@ const Player = require("./Player");
 let humanPlayer;
 let battleDroidPlayer;
 let skynetPlayer;
+let joshuaPlayer;
 
 beforeEach(() => {
   humanPlayer = new Player("Player Name", "Human");
   battleDroidPlayer = new Player("B1", "Battle Droid");
   skynetPlayer = new Player("Net", "Skynet");
+  joshuaPlayer = new Player("Josh", "Joshua");
 });
 
 test("players have a name", () => {
   expect(humanPlayer.name).toBe("Player Name");
   expect(battleDroidPlayer.name).toBe("B1");
   expect(skynetPlayer.name).toBe("Net");
+  expect(joshuaPlayer.name).toBe("Josh");
 });
 
 test("human players are not AI", () => {
@@ -24,6 +27,7 @@ test("human players are not AI", () => {
 test("non-human players are AI", () => {
   expect(battleDroidPlayer.isAI).toBe(true);
   expect(skynetPlayer.isAI).toBe(true);
+  expect(joshuaPlayer.isAI).toBe(true);
 });
 
 test("battle droid getAIMove generates a legal coordinate", () => {
@@ -38,6 +42,16 @@ test("battle droid getAIMove generates a legal coordinate", () => {
 
 test("skynet getAIMove generates a legal coordinate", () => {
   const getAIMoveReturnValue = skynetPlayer.getAIMove();
+  expect(getAIMoveReturnValue).toBeInstanceOf(Array);
+  expect(getAIMoveReturnValue.length).toBe(2);
+  expect(getAIMoveReturnValue[0]).toBeGreaterThanOrEqual(0);
+  expect(getAIMoveReturnValue[1]).toBeGreaterThanOrEqual(0);
+  expect(getAIMoveReturnValue[0]).toBeLessThanOrEqual(9);
+  expect(getAIMoveReturnValue[1]).toBeLessThanOrEqual(9);
+});
+
+test("joshua getAIMove generates a legal coordinate", () => {
+  const getAIMoveReturnValue = joshuaPlayer.getAIMove();
   expect(getAIMoveReturnValue).toBeInstanceOf(Array);
   expect(getAIMoveReturnValue.length).toBe(2);
   expect(getAIMoveReturnValue[0]).toBeGreaterThanOrEqual(0);
@@ -100,6 +114,15 @@ test("skynet players can generate 50 unique moves with coords of same parity", (
     const move = skynetPlayer.getAIMove();
     expect(acc.every((elem) => !_.isEqual(elem, move))).toBe(true);
     expect((move[0] + move[1]) % 2 === 0).toBe(true);
+    return [...acc, move];
+  }, []);
+});
+
+test("joshua players can generate 50 unique moves", () => {
+  [...Array(50)].reduce((acc) => {
+    const move = joshuaPlayer.getAIMove();
+    joshuaPlayer.lastAttackReport = { coord: move, isAHit: false };
+    expect(acc.every((elem) => !_.isEqual(elem, move))).toBe(true);
     return [...acc, move];
   }, []);
 });

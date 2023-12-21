@@ -24,9 +24,9 @@ class Player {
     if (this.#type === "Battle Droid")
       this.#randomMovesGen = Player.#buildRandomMoveGen();
     if (this.#type === "Skynet") {
-      this.#legalMoves = [...Array(50).keys()]
-        .map((val) => 2 * val)
-        .map((val) => [val % 10, Math.floor(val / 10)]);
+      this.#legalMoves = [...Array(100).keys()]
+        .map((val) => [val % 10, Math.floor(val / 10)])
+        .filter(([x, y]) => (x + y) % 2 === 0);
       this.#targetQ = [];
       this.#previousAttackCoords = [];
     }
@@ -51,34 +51,25 @@ class Player {
     }
   }
 
-  getAIMove() {
-    if (!this.#isAI)
-      throw new Error("human players cannot use AI move generator");
-    if (this.#type === "Battle Droid") return this.#randomMovesGen.next().value;
-    if (this.#type === "Skynet") return this.#targetedMoveGen();
-    return null;
-  }
-
-  static #coordIsLegal(coord) {
-    const [x, y] = coord;
-    return x >= 0 && x <= 9 && y >= 0 && y <= 9;
-  }
-
-  #coordHasBeenAttacked(coord) {
-    return this.#previousAttackCoords.some((prevAttCoord) =>
-      _.isEqual(coord, prevAttCoord)
-    );
-  }
-
-  #getRandomLegalMove() {
-    while (true) {
-      const randomInd = Math.floor(Math.random() * this.#legalMoves.length);
-      const proposedMove = this.#legalMoves.splice(randomInd, 1)[0];
-      if (!this.#coordHasBeenAttacked(proposedMove)) return proposedMove;
-    }
-  }
-
   #targetedMoveGen() {
+    const coordIsLegal = (coord) => {
+      const [x, y] = coord;
+      return x >= 0 && x <= 9 && y >= 0 && y <= 9;
+    };
+
+    const coordHasBeenAttacked = (coord) =>
+      this.#previousAttackCoords.some((prevAttCoord) =>
+        _.isEqual(coord, prevAttCoord)
+      );
+
+    const getRandomLegalMove = () => {
+      while (true) {
+        const randomInd = Math.floor(Math.random() * this.#legalMoves.length);
+        const proposedMove = this.#legalMoves.splice(randomInd, 1)[0];
+        if (!coordHasBeenAttacked(proposedMove)) return proposedMove;
+      }
+    };
+
     if (this.lastAttackReport.isAHit && !this.lastAttackReport.isShipSunk) {
       const [lastX, lastY] = this.lastAttackReport.coord;
       const adjCoords = [
@@ -88,16 +79,22 @@ class Player {
         [lastX, lastY - 1],
       ];
       const newTargets = adjCoords.filter(
-        (coord) =>
-          Player.#coordIsLegal(coord) && !this.#coordHasBeenAttacked(coord)
+        (coord) => coordIsLegal(coord) && !coordHasBeenAttacked(coord)
       );
       this.#targetQ.push(...newTargets);
     }
     let nextAttackCoords;
     if (this.#targetQ.length !== 0) nextAttackCoords = this.#targetQ.shift();
-    else nextAttackCoords = this.#getRandomLegalMove();
+    else nextAttackCoords = getRandomLegalMove();
     this.#previousAttackCoords.push(nextAttackCoords);
     return nextAttackCoords;
+  }
+
+  getAIMove() {
+    if (!this.#isAI) throw new Error("human players cannot use getAIMove");
+    if (this.#type === "Battle Droid") return this.#randomMovesGen.next().value;
+    if (this.#type === "Skynet") return this.#targetedMoveGen();
+    return null;
   }
 
   static getAIFleetDeploymentInfo() {

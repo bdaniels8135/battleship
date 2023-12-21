@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const Player = require("./Player");
 
 let humanPlayer;
@@ -7,13 +8,13 @@ let skynetPlayer;
 beforeEach(() => {
   humanPlayer = new Player("Player Name", "Human");
   battleDroidPlayer = new Player("B1", "Battle Droid");
-  skynetPlayer = new Player("Skynet", "Skynet");
+  skynetPlayer = new Player("Net", "Skynet");
 });
 
 test("players have a name", () => {
-  expect(humanPlayer.name).toBeDefined();
-  expect(battleDroidPlayer.name).toBeDefined();
-  expect(skynetPlayer.name).toBeDefined();
+  expect(humanPlayer.name).toBe("Player Name");
+  expect(battleDroidPlayer.name).toBe("B1");
+  expect(skynetPlayer.name).toBe("Net");
 });
 
 test("human players are not AI", () => {
@@ -29,8 +30,6 @@ test("battle droid getAIMove generates a legal coordinate", () => {
   const getAIMoveReturnValue = battleDroidPlayer.getAIMove();
   expect(getAIMoveReturnValue).toBeInstanceOf(Array);
   expect(getAIMoveReturnValue.length).toBe(2);
-  expect(getAIMoveReturnValue[0]).toEqual(expect.any(Number));
-  expect(getAIMoveReturnValue[1]).toEqual(expect.any(Number));
   expect(getAIMoveReturnValue[0]).toBeGreaterThanOrEqual(0);
   expect(getAIMoveReturnValue[1]).toBeGreaterThanOrEqual(0);
   expect(getAIMoveReturnValue[0]).toBeLessThanOrEqual(9);
@@ -41,8 +40,6 @@ test("skynet getAIMove generates a legal coordinate", () => {
   const getAIMoveReturnValue = skynetPlayer.getAIMove();
   expect(getAIMoveReturnValue).toBeInstanceOf(Array);
   expect(getAIMoveReturnValue.length).toBe(2);
-  expect(getAIMoveReturnValue[0]).toEqual(expect.any(Number));
-  expect(getAIMoveReturnValue[1]).toEqual(expect.any(Number));
   expect(getAIMoveReturnValue[0]).toBeGreaterThanOrEqual(0);
   expect(getAIMoveReturnValue[1]).toBeGreaterThanOrEqual(0);
   expect(getAIMoveReturnValue[0]).toBeLessThanOrEqual(9);
@@ -53,7 +50,7 @@ test("getAIMove throws error if player is not AI", () => {
   function humanAIMove() {
     humanPlayer.getAIMove();
   }
-  expect(humanAIMove).toThrow("human players cannot use AI move generator");
+  expect(humanAIMove).toThrow("human players cannot use getAIMove");
 });
 
 test.each([...Array(10)])(
@@ -89,3 +86,20 @@ test.each([...Array(10)])(
     });
   }
 );
+
+test("battle droid players can generate 100 unique moves", () => {
+  [...Array(100)].reduce((acc) => {
+    const move = battleDroidPlayer.getAIMove();
+    expect(acc.every((elem) => !_.isEqual(elem, move))).toBe(true);
+    return [...acc, move];
+  }, []);
+});
+
+test("skynet players can generate 50 unique moves with coords of same parity", () => {
+  [...Array(50)].reduce((acc) => {
+    const move = skynetPlayer.getAIMove();
+    expect(acc.every((elem) => !_.isEqual(elem, move))).toBe(true);
+    expect((move[0] + move[1]) % 2 === 0).toBe(true);
+    return [...acc, move];
+  }, []);
+});
